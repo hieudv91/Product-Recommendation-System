@@ -4,15 +4,50 @@ const Hapi = require('@hapi/hapi');
 const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
-
+const Jwt = require('hapi-auth-jwt2')
 const Routes = require('./routes/index')
 const db = require('./database').db;
+const { getUserById } = require('./utils/auth.util')
+
+
+const validate = async function (decoded, request, h) {
+    console.log(" - - - - - - - decoded token:");
+    console.log(decoded.user);
+
+    // do your checks to see if the person is valid
+    if (getUserById(decoded.user.id)) {
+        return {
+            isValid: true,
+            credentials: {
+                scope: decoded.user.role.toLowerCase()
+            }
+        };
+    }
+    else {
+        return { isValid: false };
+    }
+};
 
 const init = async () => {
 
     const server = Hapi.server({
         port: 8080,
-        host: 'localhost'
+        host: 'localhost',
+        routes: {
+            validate: {
+                failAction: async (request, h, err) => {
+                    if (process.env.NODE_ENV === 'production') {
+                        // In prod, log a limited error message and throw the default Bad Request error.
+                        console.error('ValidationError:', err.message);
+                        throw Boom.badRequest(`Invalid request payload input`);
+                    } else {
+                        // During development, log and respond with the full error.
+                        console.error(err);
+                        throw err;
+                    }
+                }
+            }
+        }
     });
 
     server.route({
@@ -23,7 +58,7 @@ const init = async () => {
             return h.redirect('/documentation');
         }
     });
-    server.route(Routes)
+
 
     const swaggerOptions = {
         info: {
@@ -31,10 +66,11 @@ const init = async () => {
             version: '1.0',
         },
         grouping: 'tags',
-        tagsGroupingFilter: (tag) => tag !== 'api'
+        tagsGroupingFilter: (tag) => tag !== 'api',
     };
 
     await server.register([
+        Jwt,
         Inert,
         Vision,
         {
@@ -42,6 +78,14 @@ const init = async () => {
             options: swaggerOptions
         }
     ]);
+
+    server.auth.strategy('jwt', 'jwt',
+        {
+            key: 'NeverShareYourSecret',
+            validate
+        });
+    server.route(Routes)
+    //server.auth.default('jwt');
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

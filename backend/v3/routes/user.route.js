@@ -1,4 +1,6 @@
 const Controller = require('../controllers/user.controller');
+
+const Jwt = require('hapi-auth-jwt2')
 const Joi = require('joi');
 const PATH = '/api/users'
 
@@ -18,10 +20,9 @@ module.exports = [
                     _end: Joi.number().integer().min(0).greater(Joi.ref('_start'))
                 })
             },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with'],
-                additionalExposedHeaders: ['X-Total-Count']
+            auth: {
+                strategy: 'jwt',
+                scope: ['admin']
             }
         }
     },
@@ -38,10 +39,6 @@ module.exports = [
                     fullname: Joi.string().optional(),
                     role: Joi.string()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -55,10 +52,6 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -72,10 +65,6 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -96,10 +85,6 @@ module.exports = [
                     role: Joi.string(),
                     id: Joi.string()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     }

@@ -16,11 +16,6 @@ module.exports = [
                     username: Joi.string().required(),
                     password: Joi.string().required()
                 })
-            },
-            
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with'],
             }
         }
     }

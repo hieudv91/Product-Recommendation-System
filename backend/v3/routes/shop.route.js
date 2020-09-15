@@ -1,6 +1,6 @@
-const Controller = require('../controllers/company.controller');
+const Controller = require('../controllers/shop.controller');
 const Joi = require('joi');
-const PATH = '/api/companies'
+const PATH = '/api/shops'
 
 module.exports = [
     {
@@ -8,14 +8,16 @@ module.exports = [
         method: 'GET',
         handler: Controller.find,
         options: {
-            tags: ['api'],
+            tags: ['api', 'shop'],
             validate: {
                 query: Joi.object({
                     q: Joi.string(),
                     _sort: Joi.string(),
                     _order: Joi.string(),
                     _start: Joi.number().integer().min(0),
-                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start'))
+                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
+                    id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
+                    owner: Joi.string(),
                 })
             }
         }
@@ -25,12 +27,12 @@ module.exports = [
         method: 'POST',
         handler: Controller.create,
         options: {
-            tags: ['api'],
+            tags: ['api', 'shop'],
             validate: {
                 payload: Joi.object().keys({
-                    name: Joi.string().required(),
-                    city: Joi.string().optional(),
-                    address: Joi.string().optional(),
+                    shopname: Joi.string().required(),
+                    description: Joi.string().required(),
+                    owner: Joi.string().required()
                 })
             }
         }
@@ -40,7 +42,7 @@ module.exports = [
         method: 'GET',
         handler: Controller.findOne,
         options: {
-            tags: ['api'],
+            tags: ['api', 'shop'],
             validate: {
                 params: Joi.object().keys({
                     id: Joi.string().required()
@@ -51,9 +53,9 @@ module.exports = [
     {
         path: `${PATH}/{id}`,
         method: 'DELETE',
-        handler: Controller.delete,
+        handler: Controller.deleteOne,
         options: {
-            tags: ['api'],
+            tags: ['api', 'shop'],
             validate: {
                 params: Joi.object().keys({
                     id: Joi.string().required()
@@ -66,15 +68,15 @@ module.exports = [
         method: 'PUT',
         handler: Controller.update,
         options: {
-            tags: ['api'],
+            tags: ['api', 'shop'],
             validate: {
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 }),
                 payload: Joi.object().keys({
-                    name: Joi.string().required(),
-                    city: Joi.string().optional(),
-                    address: Joi.string().optional(),
+                    shopname: Joi.string().required(),
+                    description: Joi.string().optional(),
+                    owner: Joi.string().optional(),
                     id: Joi.string()
                 })
             }

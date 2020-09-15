@@ -18,11 +18,6 @@ module.exports = [
                     _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
                     id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with'],
-                additionalExposedHeaders: ['X-Total-Count']
             }
         }
     },
@@ -37,10 +32,6 @@ module.exports = [
                     rolename: Joi.string().required(),
                     description: Joi.string().required()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -54,10 +45,6 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -71,10 +58,6 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     },
@@ -93,10 +76,6 @@ module.exports = [
                     description: Joi.string().optional(),
                     id: Joi.string()
                 })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with']
             }
         }
     }

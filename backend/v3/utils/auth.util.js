@@ -25,12 +25,11 @@ const findByCredentials = async (username, password) => {
 const createToken = (user, expirationPeriod) => {
     try {
         let token = {}
-        const tokenUser = user
         token = Jwt.sign(
             {
-                user: tokenUser
+                user
             },
-            'jwtSecret',
+            'NeverShareYourSecret',
             { algorithm: 'HS256', expiresIn: expirationPeriod }
         )
         return token
@@ -38,5 +37,19 @@ const createToken = (user, expirationPeriod) => {
         throw Boom.unauthorized(err)
     }
 }
+const getUserById = async (id) => {
+    let obj
+    try {
+        obj = await Model.findById(id)
+    } catch (err) {
+        throw Boom.notFound()
+    }
+    
+    if(obj){
+        return true
+    } else{
+        return false
+    }
+}
 
-module.exports = { findByCredentials, createToken }
+module.exports = { findByCredentials, createToken, getUserById }

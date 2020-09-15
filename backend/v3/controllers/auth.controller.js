@@ -3,14 +3,12 @@ const Boom = require('@hapi/boom')
 const Model = require('../models/user.model');
 const RoleModel = require('../models/role.model');
 const { findByCredentials, createToken } = require('../utils/auth.util')
-const { escapeRegex } = require('../utils/function.util')
 
 const loginPre_find = async (req, h) => {
     try {
         const { username, password } = req.payload
         let user = await findByCredentials(username, password)
         if (user) {
-            user._id = undefined
             user.password = undefined
             user.createdAt = undefined
             user.__v = undefined
@@ -29,12 +27,12 @@ const loginPre_role = async function (req, h) {
     }
 }
 const loginPre_token = async (req, h) => {
-    let user = req.pre.user
-    if (user) {
-        user.role = req.pre.role.name
-    }
     return createToken(
-        user,
+        {
+            username: req.pre.user.username,
+            id: req.pre.user.id,
+            role: req.pre.role.rolename
+        },
         '730h'
     )
 }
