@@ -1,6 +1,4 @@
 const Controller = require('../controllers/user.controller');
-
-const Jwt = require('hapi-auth-jwt2')
 const Joi = require('joi');
 const PATH = '/api/users'
 
@@ -20,10 +18,7 @@ module.exports = [
                     _end: Joi.number().integer().min(0).greater(Joi.ref('_start'))
                 })
             },
-            auth: {
-                strategy: 'jwt',
-                scope: ['admin']
-            }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -39,7 +34,9 @@ module.exports = [
                     fullname: Joi.string().optional(),
                     role: Joi.string()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin'] }
+
         }
     },
     {
@@ -52,7 +49,8 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
@@ -65,7 +63,8 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -85,7 +84,8 @@ module.exports = [
                     role: Joi.string(),
                     id: Joi.string()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     }
 ];

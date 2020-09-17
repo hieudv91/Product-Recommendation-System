@@ -11,14 +11,11 @@ const { getUserById } = require('./utils/auth.util')
 
 
 const validate = async function (decoded, request, h) {
-    console.log(" - - - - - - - decoded token:");
-    console.log(decoded.user);
-
-    // do your checks to see if the person is valid
     if (getUserById(decoded.user.id)) {
         return {
             isValid: true,
             credentials: {
+                userid: decoded.user.id,
                 scope: decoded.user.role.toLowerCase()
             }
         };
@@ -85,7 +82,6 @@ const init = async () => {
             validate
         });
     server.route(Routes)
-    //server.auth.default('jwt');
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

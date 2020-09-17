@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const ModelSchema = new Schema({
-    shopname: {
+    shopid: {
         required: true,
         unique: true,
+        type: String
+    },
+    shopname: {
+        required: true,
         type: String
     },
     description: {

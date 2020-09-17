@@ -18,7 +18,6 @@ export default {
             .then(({ accessToken }) => {
                 localStorage.setItem('accessToken', accessToken)
                 const decodedToken = decodeJwt(accessToken);
-                console.log(decodedToken)
                 localStorage.setItem('permissions', decodedToken.user.role)
                 return Promise.resolve()
             })

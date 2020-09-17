@@ -41,8 +41,14 @@ const create = async (req, res) => {
 }
 const findOne = async (req, res) => {
     let obj
+    const { id } = req.params
+    const { userid, scope } = req.auth.credentials
+    if (scope != 'admin') {
+        if (id != userid) {
+            throw Boom.unauthorized()
+        }
+    }
     try {
-        const { id } = req.params
         obj = await Model.findById(id)
     } catch (err) {
         throw Boom.notFound()
@@ -54,7 +60,7 @@ const update = async (req, res) => {
     let uObj = null
     const { id } = req.params
     const attributes = { ...req.payload };
-    delete attributes.password 
+    delete attributes.password
     try {
         uObj = await Model.findByIdAndUpdate(id, attributes, { new: true })
     } catch (err) {

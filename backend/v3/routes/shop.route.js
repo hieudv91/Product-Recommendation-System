@@ -19,7 +19,8 @@ module.exports = [
                     id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
                     owner: Joi.string(),
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
@@ -34,7 +35,8 @@ module.exports = [
                     description: Joi.string().required(),
                     owner: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
@@ -79,7 +81,8 @@ module.exports = [
                     owner: Joi.string().optional(),
                     id: Joi.string()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     }
 ];
