@@ -25,7 +25,7 @@ const App = () => (
         dashboard={Dashboard}
         layout={MyLayout}>
         {permissions =>
-            permissions === 'Admin' ?
+            permissions === 'admin' ?
                 [
                     <Resource name="roles"
                         icon={Icon.Accessibility}
