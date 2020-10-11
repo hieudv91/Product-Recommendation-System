@@ -1,5 +1,5 @@
 const Controller = require('../controllers/user.controller');
-const Joi = require('joi');
+const Schema = require('../schemas/user.schema');
 const PATH = '/api/users'
 
 module.exports = [
@@ -9,15 +9,7 @@ module.exports = [
         handler: Controller.find,
         options: {
             tags: ['api', 'user'],
-            validate: {
-                query: Joi.object({
-                    q: Joi.string(),
-                    _sort: Joi.string(),
-                    _order: Joi.string(),
-                    _start: Joi.number().integer().min(0),
-                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start'))
-                })
-            },
+            validate: Schema.find,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
@@ -27,14 +19,7 @@ module.exports = [
         handler: Controller.create,
         options: {
             tags: ['api', 'user'],
-            validate: {
-                payload: Joi.object().keys({
-                    username: Joi.string().required(),
-                    password: Joi.string().optional(),
-                    fullname: Joi.string().optional(),
-                    role: Joi.string()
-                })
-            },
+            validate: Schema.create,
             auth: { strategy: 'jwt', scope: ['admin'] }
 
         }
@@ -45,12 +30,8 @@ module.exports = [
         handler: Controller.findOne,
         options: {
             tags: ['api', 'user'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            },
-            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
+            validate: Schema.findOne,
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -59,11 +40,7 @@ module.exports = [
         handler: Controller.deleteOne,
         options: {
             tags: ['api', 'user'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            },
+            validate: Schema.deleteOne,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
@@ -73,19 +50,17 @@ module.exports = [
         handler: Controller.update,
         options: {
             tags: ['api', 'user'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                }),
-                payload: Joi.object().keys({
-                    username: Joi.string().required(),
-                    password: Joi.string().optional(),
-                    fullname: Joi.string().optional(),
-                    role: Joi.string(),
-                    id: Joi.string()
-                })
-            },
+            validate: Schema.update,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
-    }
+    },
+    {
+        path: `${PATH}/profile`,
+        method: 'GET',
+        handler: Controller.profile,
+        options: {
+            tags: ['api', 'user'],
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
+        }
+    },
 ];

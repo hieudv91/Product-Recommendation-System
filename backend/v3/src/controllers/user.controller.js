@@ -42,12 +42,6 @@ const create = async (req, res) => {
 const findOne = async (req, res) => {
     let obj
     const { id } = req.params
-    const { userid, scope } = req.auth.credentials
-    if (scope != 'admin') {
-        if (id != userid) {
-            throw Boom.unauthorized()
-        }
-    }
     try {
         obj = await Model.findById(id)
     } catch (err) {
@@ -80,10 +74,24 @@ const deleteOne = async (req, res) => {
     return res.response(dObj)
 
 }
+
+const profile = async (req, res) => {
+    let obj
+    const { userid } = req.auth.credentials
+    try {
+        obj = await Model.findById(userid)
+    } catch (err) {
+        throw Boom.notFound()
+    }
+    return res.response(obj)
+
+}
+
 module.exports = {
     find,
     create,
     findOne,
     update,
     deleteOne,
+    profile
 };
