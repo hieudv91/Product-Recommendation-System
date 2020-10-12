@@ -20,7 +20,7 @@ const loginPre_find = async (req, h) => {
 }
 const loginPre_role = async function (req, h) {
     try {
-        const roleId = req.pre.user?.role
+        const roleId = req.pre.user.role
         return await RoleModel.findById(roleId)
     } catch (err) {
         throw Boom.unauthorized(err)
