@@ -12,6 +12,7 @@
     "react": "^16.13.1",
     "react-admin": "^3.8.4",
     "react-dom": "^16.13.1",
+    "react-script": "^2.0.5",
     "react-scripts": "3.4.3"
   },
   "scripts": {
