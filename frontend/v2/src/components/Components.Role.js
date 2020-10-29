@@ -15,10 +15,16 @@ const VFilter = (props) => (
     </Filter>
 );
 
-const PostEditActions = ({ basePath, data }) => (
+const EditActions = ({ basePath, data }) => (
     <TopToolbar>
         <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
         <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+const ShowActions = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <EditButton basePath={basePath} record={data} />
     </TopToolbar>
 );
 const VList = (props) => (
@@ -39,7 +45,7 @@ const VCreate = (props) => (
     </Create>
 );
 const VEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+    <Edit actions={<EditActions />} {...props}>
         <SimpleForm>
             <TextInput source="rolename" disabled/>
             <TextInput source="description" />
@@ -47,7 +53,7 @@ const VEdit = (props) => (
     </Edit>
 );
 const VShow = (props) => (    
-    <Show {...props}>
+    <Show actions={<ShowActions />} {...props}>
         <SimpleShowLayout>
             <TextField source="rolename" />
             <TextField source="description" />

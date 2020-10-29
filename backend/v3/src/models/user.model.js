@@ -20,7 +20,11 @@ const ModelSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'role',
         required: true
-      }
+    },
+    active: {
+        type: Boolean,
+        default: true,
+    }
 });
 ModelSchema.set('toJSON', {
     transform: function (doc, ret, options) {

@@ -1,4 +1,5 @@
-const Controller = require('../controllers/role.controller');
+const C = require('../controllers/role.controller');
+const S = require('../schemas/role.schema');
 const Joi = require('joi');
 const PATH = '/api/roles'
 
@@ -6,96 +7,50 @@ module.exports = [
     {
         path: `${PATH}`,
         method: 'GET',
-        handler: Controller.find,
+        handler: C.find,
         options: {
             tags: ['api', 'role'],
-            validate: {
-                headers: Joi.object({
-                    Authorization: Joi.string()
-                }).options({ allowUnknown: true }),
-                query: Joi.object({
-                    q: Joi.string(),
-                    _sort: Joi.string(),
-                    _order: Joi.string(),
-                    _start: Joi.number().integer().min(0),
-                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
-                    id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
-                })
-            },
+            validate: S.find,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
         path: `${PATH}`,
         method: 'POST',
-        handler: Controller.create,
+        handler: C.create,
         options: {
             tags: ['api', 'role'],
-            validate: {
-                headers: Joi.object({
-                    Authorization: Joi.string()
-                }).options({ allowUnknown: true }),
-                payload: Joi.object().keys({
-                    rolename: Joi.string().required(),
-                    description: Joi.string().required()
-                })
-            },
+            validate: S.create,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'GET',
-        handler: Controller.findOne,
+        handler: C.findOne,
         options: {
             tags: ['api', 'role'],
-            validate: {
-                headers: Joi.object({
-                    Authorization: Joi.string()
-                }).options({ allowUnknown: true }),
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            },
+            validate: S.findOne,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'DELETE',
-        handler: Controller.deleteOne,
+        handler: C.deleteOne,
         options: {
             tags: ['api', 'role'],
-            validate: {
-                headers: Joi.object({
-                    Authorization: Joi.string()
-                }).options({ allowUnknown: true }),
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            },
+            validate: S.deleteOne,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'PUT',
-        handler: Controller.update,
+        handler: C.update,
         options: {
             tags: ['api', 'role'],
-            validate: {
-                headers: Joi.object({
-                    Authorization: Joi.string()
-                }).options({ allowUnknown: true }),
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                }),
-                payload: Joi.object().keys({
-                    rolename: Joi.string().required(),
-                    description: Joi.string().optional(),
-                    id: Joi.string()
-                })
-            },
+            validate: S.update,
             auth: { strategy: 'jwt', scope: ['admin'] }
         }
     }

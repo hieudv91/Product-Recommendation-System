@@ -5,7 +5,8 @@ import {
     Edit, EditButton, Show,
     SimpleShowLayout, Filter,
     ReferenceField, SelectInput,
-    ReferenceInput, AutocompleteInput
+    ReferenceInput, AutocompleteInput,
+    PasswordInput
 } from 'react-admin';
 
 const VFilter = (props) => (
@@ -14,7 +15,7 @@ const VFilter = (props) => (
     </Filter>
 );
 
-export const VList = (props) => (
+const VList = (props) => (
     <List {...props} filters={<VFilter />} title="List of users">
         <Datagrid rowClick="show">
             <TextField source="username" />
@@ -27,7 +28,7 @@ export const VList = (props) => (
         </Datagrid>
     </List>
 );
-export const VListA = (props) => (
+const VListA = (props) => (
     <List {...props} filters={<VFilter />} title="List of users">
         <Datagrid rowClick="show">
             <TextField source="username" />
@@ -40,11 +41,11 @@ export const VListA = (props) => (
         </Datagrid>
     </List>
 );
-export const VCreate = (props) => (
+const VCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="username" />
-            <TextInput source="password" />
+            <PasswordInput source="password" />
             <TextInput source="fullname" />
             <ReferenceInput label="Role" source="role" reference="roles" link="show">
                 <AutocompleteInput  optionText="rolename" />
@@ -52,7 +53,7 @@ export const VCreate = (props) => (
         </SimpleForm>
     </Create>
 );
-export const VEdit = (props) => (
+const VEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput source="username" />
@@ -64,7 +65,7 @@ export const VEdit = (props) => (
         </SimpleForm>
     </Edit>
 );
-export const VShow = (props) => (
+const VShow = (props) => (
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="username" />
@@ -76,3 +77,8 @@ export const VShow = (props) => (
         </SimpleShowLayout>
     </Show>
 );
+
+export const L = VList;
+export const C = VCreate;
+export const E = VEdit;
+export const S = VShow;

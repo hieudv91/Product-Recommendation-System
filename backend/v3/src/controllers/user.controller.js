@@ -7,14 +7,14 @@ const { escapeRegex, generateHash } = require('../utils/function.util')
 const find = async (req, h) => {
     const { userid } = req.auth.credentials
     let { q, _sort, _order, _start, _end } = req.query
-    let count = 0
+    let c = 0
     _order = 'DESC' ? '-' : ''
     q = q ? q : ''
-    let lstObj
+    let lo
     const regex = new RegExp(escapeRegex(q), 'gi');
     try {
-        count = (await Model.find({ fullname: regex })).length
-        lstObj = await Model.find({ fullname: regex })
+        c = (await Model.find({ fullname: regex, active: true })).length
+        lo = await Model.find({ fullname: regex, active: true })
             .skip(_start)
             .limit(_end - _start)
             .sort(`${_order}${_sort}`)
@@ -23,78 +23,73 @@ const find = async (req, h) => {
     } catch (err) {
         throw Boom.notFound()
     }
-    lstObj = lstObj.filter(o => o.id != userid)
-    const response = h.response(lstObj);
-    response.header('X-Total-Count', count);
+    lo = lo.filter(o => o.id != userid)
+    const response = h.response(lo);
+    response.header('X-Total-Count', c - 1);
     return response;
 }
 const create = async (req, res) => {
-    let crObj = null
-    let attrs = { ...req.payload }
-    attrs.password = await generateHash(attrs.password)
+    let o = null
+    let la = { ...req.payload }
+    la.password = await generateHash(la.password)
     try {
-        const nObj = new Model(attrs);
-        crObj = await nObj.save();
+        const no = new Model(la);
+        o = await no.save();
     } catch (err) {
         throw Boom.notAcceptable()
     }
-    return res.response(crObj)
+    return res.response(o)
 }
 const findOne = async (req, res) => {
-    let obj
+    let o
     const { id } = req.params
     try {
-        obj = await Model.findById(id)
+        o = await Model.findById(id)
     } catch (err) {
         throw Boom.notFound()
     }
-    return res.response(obj)
+    return res.response(o)
 
 }
 const update = async (req, res) => {
-    let uObj = null
+    let o = null
     const { id } = req.params
-    const attributes = { ...req.payload };
-    delete attributes.password
+    const la = { ...req.payload };
+    delete la.password
     try {
-        uObj = await Model.findByIdAndUpdate(id, attributes, { new: true })
+        o = await Model.findByIdAndUpdate(id, la, { new: true })
     } catch (err) {
         throw Boom.notAcceptable()
     }
-    return res.response(uObj)
+    return res.response(o)
 }
 const deleteOne = async (req, res) => {
-    let dObj = null
+    let o = null
     const { id } = req.params
     try {
-        dObj = await Model.findByIdAndDelete(id)
+        o = await Model.findByIdAndUpdate(id, { active: false })
     } catch (err) {
         throw Boom.notAcceptable()
     }
-    return res.response(dObj)
+    return res.response(o)
 
 }
 
 const profile = async (req, res) => {
-    let obj, role
+    let o, role
     const { userid } = req.auth.credentials
     try {
-        obj = await Model.findById(userid)
-        if (obj){
-            role = await RM.findById(obj.role)
-            obj.role = role.rolename
+        o = await Model.findById(userid)
+        if (o) {
+            role = await RM.findById(o.role)
+            o.role = role.rolename
         }
     } catch (err) {
         throw Boom.notFound()
     }
-    return res.response({name: obj.username, role: role.rolename})
+    return res.response({ name: o.username, role: role.rolename })
 }
 
 module.exports = {
-    find,
-    create,
-    findOne,
-    update,
-    deleteOne,
-    profile
+    find, create, findOne, update, deleteOne, profile
 };
