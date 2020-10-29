@@ -5,83 +5,76 @@ const { escapeRegex } = require('../utils/function.util')
 
 const find = async (req, h) => {
     let { q, _sort, _order, _start, _end, id } = req.query
-    let count = 0
+    let c = 0
     _order = 'DESC' ? '-' : ''
     q = q ? q : ''
-    let lstObj
+    let lo
     const regex = new RegExp(escapeRegex(q), 'gi');
     try {
         if (id) {
-            let ids = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
-            lstObj = await Model.find().where('_id').in(ids).exec();
+            let li = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
+            lo = await Model.find().where('_id').in(li).exec();
         } else {
-            count = (await Model.find({ rolename: regex })).length
-            lstObj = await Model.find({ rolename: regex })
+            c = (await Model.find({ rolename: regex, active: true })).length
+            lo = await Model.find({ rolename: regex, active: true })
                 .skip(_start)
                 .limit(_end - _start)
                 .sort(`${_order}${_sort}`)
         }
-
     } catch (err) {
-        console.log(err)
         throw Boom.notFound()
     }
-
-    const response = h.response(lstObj);
-    response.header('X-Total-Count', count);
+    const response = h.response(lo);
+    response.header('X-Total-Count', c);
     return response;
 }
 const create = async (req, res) => {
-    let crObj = null
-    const attrs = { ...req.payload }
+    let o = null
+    const la = { ...req.payload }
     try {
-        const nObj = new Model(attrs);
-        crObj = await nObj.save();
+        const no = new Model(la);
+        o = await no.save();
     } catch (err) {
         throw Boom.notAcceptable()
     }
-    return res.response(crObj)
+    return res.response(o)
 }
 const findOne = async (req, res) => {
-    let obj
+    let o
     try {
         const { id } = req.params
-        obj = await Model.findById(id)
+        o = await Model.findById(id)
+        if(!o.active){
+            throw Boom.notFound()
+        }
     } catch (err) {
         throw Boom.notFound()
     }
-    return res.response(obj)
+    return res.response(o)
 }
 const update = async (req, res) => {
-    let uObj = null
+    let o = null
     const { id } = req.params
     const attributes = { ...req.payload };
-    let crObj = null
     try {
-        uObj = await Model.findByIdAndUpdate(id, attributes, { new: true })
+        o = await Model.findByIdAndUpdate(id, attributes, { new: true })
     } catch (err) {
         console.log(err)
         throw Boom.notAcceptable()
     }
-    return res.response(uObj)
+    return res.response(o)
 }
 const deleteOne = async (req, res) => {
-    let dObj = null
+    let o = null
     const { id } = req.params
     try {
-        dObj = await Model.findByIdAndDelete(id)
+        o = await Model.findByIdAndUpdate(id, { active: false }, { new: true })
     } catch (err) {
         throw Boom.notAcceptable()
     }
-    return res.response(dObj)
-
+    return res.response(o)
 }
 
 module.exports = {
-    find,
-    create,
-    findOne,
-    update,
-    deleteOne,
-
+    find, create, findOne, update, deleteOne,
 };

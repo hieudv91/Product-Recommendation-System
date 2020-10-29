@@ -60,7 +60,7 @@ module.exports = [
         handler: Controller.profile,
         options: {
             tags: ['api', 'user'],
-            auth: { strategy: 'jwt', scope: ['sysadm','admin', 'customer'] }
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
 ];

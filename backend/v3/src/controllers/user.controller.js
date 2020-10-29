@@ -24,7 +24,6 @@ const find = async (req, h) => {
         throw Boom.notFound()
     }
     lstObj = lstObj.filter(o => o.id != userid)
-                    .filter(o => o.username != 'sysadm')
     const response = h.response(lstObj);
     response.header('X-Total-Count', count);
     return response;

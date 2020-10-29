@@ -10,6 +10,9 @@ module.exports = [
         options: {
             tags: ['api', 'role'],
             validate: {
+                headers: Joi.object({
+                    Authorization: Joi.string()
+                }).options({ allowUnknown: true }),
                 query: Joi.object({
                     q: Joi.string(),
                     _sort: Joi.string(),
@@ -19,7 +22,7 @@ module.exports = [
                     id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
                 })
             },
-            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -29,12 +32,15 @@ module.exports = [
         options: {
             tags: ['api', 'role'],
             validate: {
+                headers: Joi.object({
+                    Authorization: Joi.string()
+                }).options({ allowUnknown: true }),
                 payload: Joi.object().keys({
                     rolename: Joi.string().required(),
                     description: Joi.string().required()
                 })
             },
-            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -44,11 +50,14 @@ module.exports = [
         options: {
             tags: ['api', 'role'],
             validate: {
+                headers: Joi.object({
+                    Authorization: Joi.string()
+                }).options({ allowUnknown: true }),
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
             },
-            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -58,11 +67,14 @@ module.exports = [
         options: {
             tags: ['api', 'role'],
             validate: {
+                headers: Joi.object({
+                    Authorization: Joi.string()
+                }).options({ allowUnknown: true }),
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
             },
-            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     },
     {
@@ -72,6 +84,9 @@ module.exports = [
         options: {
             tags: ['api', 'role'],
             validate: {
+                headers: Joi.object({
+                    Authorization: Joi.string()
+                }).options({ allowUnknown: true }),
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 }),
@@ -81,7 +96,7 @@ module.exports = [
                     id: Joi.string()
                 })
             },
-            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
+            auth: { strategy: 'jwt', scope: ['admin'] }
         }
     }
 ];

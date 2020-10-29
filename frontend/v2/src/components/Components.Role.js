@@ -3,8 +3,11 @@ import {
     List, Datagrid, TextField,
     Create, SimpleForm, TextInput,
     Edit, EditButton, Show,
-    SimpleShowLayout, Filter
+    SimpleShowLayout, Filter,
+    TopToolbar, ListButton, ShowButton
 } from 'react-admin';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+
 
 const VFilter = (props) => (
     <Filter {...props}>
@@ -12,7 +15,13 @@ const VFilter = (props) => (
     </Filter>
 );
 
-export const VList = (props) => (
+const PostEditActions = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+const VList = (props) => (
     <List {...props} filters={<VFilter />} title="List of role">
         <Datagrid rowClick="show">
             <TextField source="rolename" />
@@ -21,23 +30,23 @@ export const VList = (props) => (
         </Datagrid>
     </List>
 );
-export const VCreate = (props) => (
+const VCreate = (props) => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm >
             <TextInput source="rolename" />
             <TextInput source="description" />
         </SimpleForm>
     </Create>
 );
-export const VEdit = (props) => (
-    <Edit {...props}>
+const VEdit = (props) => (
+    <Edit actions={<PostEditActions />} {...props}>
         <SimpleForm>
-            <TextInput source="rolename" />
+            <TextInput source="rolename" disabled/>
             <TextInput source="description" />
         </SimpleForm>
     </Edit>
 );
-export const VShow = (props) => (    
+const VShow = (props) => (    
     <Show {...props}>
         <SimpleShowLayout>
             <TextField source="rolename" />
@@ -45,3 +54,8 @@ export const VShow = (props) => (
         </SimpleShowLayout>
     </Show>
 );
+
+export const L = VList;
+export const C = VCreate;
+export const E = VEdit;
+export const S = VShow;
