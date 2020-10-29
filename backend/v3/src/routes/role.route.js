@@ -18,7 +18,8 @@ module.exports = [
                     _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
                     id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
         }
     },
     {
@@ -32,7 +33,8 @@ module.exports = [
                     rolename: Joi.string().required(),
                     description: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
         }
     },
     {
@@ -45,7 +47,8 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
         }
     },
     {
@@ -58,7 +61,8 @@ module.exports = [
                 params: Joi.object().keys({
                     id: Joi.string().required()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
         }
     },
     {
@@ -76,7 +80,8 @@ module.exports = [
                     description: Joi.string().optional(),
                     id: Joi.string()
                 })
-            }
+            },
+            auth: { strategy: 'jwt', scope: ['sysadm', 'admin'] }
         }
     }
 ];

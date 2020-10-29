@@ -5,8 +5,8 @@ import authProvider from './authProvider';
 import MyLayout from './components/MyLayout';
 import Dashboard from './components/Dashboard';
 const Icon = require('./components/Icons')
-const RoleComponents = require('./components/Components.Role')
-const UserComponents = require('./components/Components.User')
+const R = require('./components/Components.Role')
+const U = require('./components/Components.User')
 const ProductComponents = require('./components/Components.Product')
 const ShopComponents = require('./components/Components.Shop')
 
@@ -18,6 +18,9 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
+const Role = <Resource name="roles" icon={Icon.Accessibility} list={R.VList} create={R.VCreate} edit={R.VEdit} show={R.VShow} />
+const RoleA = <Resource name="roles" />
+const User = <Resource name="users" icon={Icon.User} list={U.VList} create={U.VCreate} edit={U.VEdit} show={U.VShow} />
 const App = () => (
 
     <Admin dataProvider={dataProvider}
@@ -25,40 +28,10 @@ const App = () => (
         dashboard={Dashboard}
         layout={MyLayout}>
         {permissions =>
-            permissions === 'admin' ?
-                [
-                    <Resource name="roles"
-                        icon={Icon.Accessibility}
-                        list={RoleComponents.VList}
-                        create={RoleComponents.VCreate}
-                        edit={RoleComponents.VEdit}
-                        show={RoleComponents.VShow} />,
-                    <Resource name="users"
-                        icon={Icon.User}
-                        list={UserComponents.VList}
-                        create={UserComponents.VCreate}
-                        edit={UserComponents.VEdit}
-                        show={UserComponents.VShow} />,
-                    <Resource name="products"
-                        icon={Icon.User}
-                        list={ProductComponents.VList}
-                        create={ProductComponents.VCreate}
-                        edit={ProductComponents.VEdit}
-                        show={ProductComponents.VShow} />
-                ] : [
-                    <Resource name="shops"
-                        icon={Icon.User}
-                        list={ShopComponents.VList}
-                        create={ShopComponents.VCreate}
-                        edit={ShopComponents.VEdit}
-                        show={ShopComponents.VShow} />,
-                    <Resource name="products"
-                        icon={Icon.User}
-                        list={ProductComponents.VList}
-                        create={ProductComponents.VCreate}
-                        edit={ProductComponents.VEdit}
-                        show={ProductComponents.VShow} />
-                ]
+            permissions === 'sysadm' ? [Role] :
+                permissions === 'admin' ? [User, RoleA] :
+                    permissions === 'customer' ? [Role, User]
+                        : null
         }
     </Admin>
 );

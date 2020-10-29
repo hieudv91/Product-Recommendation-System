@@ -27,6 +27,19 @@ export const VList = (props) => (
         </Datagrid>
     </List>
 );
+export const VListA = (props) => (
+    <List {...props} filters={<VFilter />} title="List of users">
+        <Datagrid rowClick="show">
+            <TextField source="username" />
+            <TextField source="password" />
+            <TextField source="fullname" />
+            <ReferenceField label="Role" source="role">
+                <TextField source="description" />
+            </ReferenceField>
+            <EditButton />
+        </Datagrid>
+    </List>
+);
 export const VCreate = (props) => (
     <Create {...props}>
         <SimpleForm>

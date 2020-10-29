@@ -8,8 +8,10 @@ export default {
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' })
         });
+        console.log('here')
         return fetch(request)
             .then((response) => {
+                console.log('here')
                 if (response.status < 200 || response.status >= 300) {
                     return Promise.reject()
                 }

@@ -1,26 +1,25 @@
 import * as React from "react";
-import { useQuery, Loading, Error, } from 'react-admin';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
-import decodeJwt from 'jwt-decode';
 
+let data = {}
 export default () => {
     const accessToken = localStorage.getItem('accessToken')
-    const decodedToken = decodeJwt(accessToken);
-    const { data, loading, error } = useQuery({
-        type: 'getOne',
-        resource: 'users',
-        payload: { id: decodedToken.user.id }
-    });
-
-    if (loading) return <Loading />;
-    if (error) return <Error />;
-    if (!data) return null;
+    fetch('http://localhost:8080/api/users/profile',
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: accessToken
+            },
+        })
+        .then(response => response.json())
+        .then(d => data = d)
 
     return (
         <Card>
             <CardHeader title="Welcome to Recommendation System" />
             <CardContent> <ul>
-                <li>Name: {data.username}</li>
+                <li>Name: {data.name}</li>
                 <li>Role: {data.role}</li>
             </ul></CardContent>
         </Card>

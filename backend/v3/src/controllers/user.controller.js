@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const Boom = require('@hapi/boom')
 const Model = require('../models/user.model');
+const RM = require('../models/role.model');
 const { escapeRegex, generateHash } = require('../utils/function.util')
 
 const find = async (req, h) => {
+    const { userid } = req.auth.credentials
     let { q, _sort, _order, _start, _end } = req.query
     let count = 0
     _order = 'DESC' ? '-' : ''
@@ -19,9 +21,10 @@ const find = async (req, h) => {
 
 
     } catch (err) {
-        console.log(err)
         throw Boom.notFound()
     }
+    lstObj = lstObj.filter(o => o.id != userid)
+                    .filter(o => o.username != 'sysadm')
     const response = h.response(lstObj);
     response.header('X-Total-Count', count);
     return response;
@@ -34,7 +37,6 @@ const create = async (req, res) => {
         const nObj = new Model(attrs);
         crObj = await nObj.save();
     } catch (err) {
-        console.log(err)
         throw Boom.notAcceptable()
     }
     return res.response(crObj)
@@ -58,7 +60,6 @@ const update = async (req, res) => {
     try {
         uObj = await Model.findByIdAndUpdate(id, attributes, { new: true })
     } catch (err) {
-        console.log(err)
         throw Boom.notAcceptable()
     }
     return res.response(uObj)
@@ -76,15 +77,18 @@ const deleteOne = async (req, res) => {
 }
 
 const profile = async (req, res) => {
-    let obj
+    let obj, role
     const { userid } = req.auth.credentials
     try {
         obj = await Model.findById(userid)
+        if (obj){
+            role = await RM.findById(obj.role)
+            obj.role = role.rolename
+        }
     } catch (err) {
         throw Boom.notFound()
     }
-    return res.response(obj)
-
+    return res.response({name: obj.username, role: role.rolename})
 }
 
 module.exports = {
