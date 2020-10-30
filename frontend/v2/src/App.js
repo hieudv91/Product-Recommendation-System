@@ -7,10 +7,10 @@ import Dashboard from './components/Dashboard';
 
 const Icon = require('./components/Icons')
 const R = require('./components/Components.Role')
-
 const U = require('./components/Components.User')
+const S = require('./components/Components.Shop')
 const ProductComponents = require('./components/Components.Product')
-const ShopComponents = require('./components/Components.Shop')
+
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -22,6 +22,7 @@ const httpClient = (url, options = {}) => {
 const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
 const Role = <Resource name="roles" icon={Icon.Role} list={R.L} create={R.C} edit={R.E} show={R.S} />
 const User = <Resource name="users" icon={Icon.User} list={U.L} create={U.C} edit={U.E} show={U.S} />
+const Shop = <Resource name="shops" icon={Icon.User} list={S.L} create={S.C} edit={S.E} show={S.S} />
 const App = () => (
 
     <Admin dataProvider={dataProvider}
@@ -30,7 +31,7 @@ const App = () => (
         layout={MyLayout}>
         {permissions =>
                 permissions === 'admin' ? [Role, User] :
-                    permissions === 'customer' ? [Role, User]
+                    permissions === 'customer' ? [Shop]
                         : null
         }
     </Admin>
