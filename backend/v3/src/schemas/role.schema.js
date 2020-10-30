@@ -20,7 +20,11 @@ const create = {
     payload: Joi.object().keys({
         rolename: Joi.string().required(),
         description: Joi.string().required()
+<<<<<<< HEAD
     }).options({ allowUnknown: true }),
+=======
+    })
+>>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 }
 const findOne = {
     headers: Joi.object({
@@ -38,7 +42,10 @@ const deleteOne = {
         id: Joi.string().required()
     })
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 const update = {
     headers: Joi.object({
         Authorization: Joi.string()
@@ -50,6 +57,7 @@ const update = {
         rolename: Joi.string().required(),
         description: Joi.string().optional(),
         id: Joi.string()
+<<<<<<< HEAD
     }).options({ allowUnknown: true }),
 }
 module.exports = {
@@ -58,4 +66,10 @@ module.exports = {
     findOne,
     deleteOne,
     update
+=======
+    })
+}
+module.exports = {
+    find, create, findOne, deleteOne, update
+>>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 };

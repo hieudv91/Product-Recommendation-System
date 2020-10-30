@@ -1,6 +1,10 @@
 const C = require('../controllers/role.controller');
+<<<<<<< HEAD
 const S = require('../schemas/role.schema');
 const Joi = require('joi');
+=======
+const S = require('../schemas/role.schema')
+>>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 const PATH = '/api/roles'
 
 module.exports = [

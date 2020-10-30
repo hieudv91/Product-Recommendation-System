@@ -44,7 +44,7 @@ const create = async (req, res) => {
     const { userid, scope } = req.auth.credentials
 
     let crObj = null
-    const attrs = { ...req.payload, owner: userid }
+    const attrs = { ...req.payload, owner: userid, shopid: `${userid}${req.payload.shopname}` }
     try {
         const nObj = new Model(attrs);
         crObj = await nObj.save();
