@@ -4,21 +4,29 @@ import {
     Create, SimpleForm, TextInput,
     Edit, EditButton, Show,
     SimpleShowLayout, Filter,
-    ReferenceField, SelectInput,
-    ReferenceInput, AutocompleteInput
+    ReferenceField,
+    ReferenceInput, AutocompleteInput,
+    TopToolbar, ListButton, ShowButton
 } from 'react-admin';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
-const VFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-    </Filter>
+const VF = (props) => (<Filter {...props}><TextInput label="Search" source="q" alwaysOn /></Filter>);
+const SA = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <EditButton basePath={basePath} record={data} />
+    </TopToolbar>
 );
-
-export const VList = (props) => (
-    <List {...props} filters={<VFilter />} title="List of users">
+const EA = ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <ShowButton basePath={basePath} record={data} />
+    </TopToolbar>
+);
+const VList = (props) => (
+    <List {...props} filters={<VF />} title="List of users">
         <Datagrid rowClick="show">
             <TextField source="username" />
-            <TextField source="password" />
             <TextField source="fullname" />
             <ReferenceField label="Role" source="role" reference="roles" link="show">
                 <TextField source="description" />
@@ -27,45 +35,33 @@ export const VList = (props) => (
         </Datagrid>
     </List>
 );
-export const VListA = (props) => (
-    <List {...props} filters={<VFilter />} title="List of users">
-        <Datagrid rowClick="show">
-            <TextField source="username" />
-            <TextField source="password" />
-            <TextField source="fullname" />
-            <ReferenceField label="Role" source="role">
-                <TextField source="description" />
-            </ReferenceField>
-            <EditButton />
-        </Datagrid>
-    </List>
-);
-export const VCreate = (props) => (
+
+const VCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="username" />
             <TextInput source="password" />
             <TextInput source="fullname" />
             <ReferenceInput label="Role" source="role" reference="roles" link="show">
-                <AutocompleteInput  optionText="rolename" />
+                <AutocompleteInput optionText="rolename" />
             </ReferenceInput>
         </SimpleForm>
     </Create>
 );
-export const VEdit = (props) => (
-    <Edit {...props}>
+const VEdit = (props) => (
+    <Edit actions={<EA />}  {...props}>
         <SimpleForm>
-            <TextInput source="username" />
+            <TextInput source="username" disabled />
             <TextInput source="password" />
             <TextInput source="fullname" />
             <ReferenceInput label="Role" source="role" reference="roles" link="show">
-                <AutocompleteInput  optionText="rolename" />
+                <AutocompleteInput optionText="rolename" />
             </ReferenceInput>
         </SimpleForm>
     </Edit>
 );
-export const VShow = (props) => (
-    <Show {...props}>
+const VShow = (props) => (
+    <Show actions={<SA />} {...props}>
         <SimpleShowLayout>
             <TextField source="username" />
             <TextField source="password" />
@@ -76,3 +72,8 @@ export const VShow = (props) => (
         </SimpleShowLayout>
     </Show>
 );
+
+export const L = VList;
+export const C = VCreate;
+export const E = VEdit;
+export const S = VShow;

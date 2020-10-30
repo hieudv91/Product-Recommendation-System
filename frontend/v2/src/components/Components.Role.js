@@ -8,24 +8,24 @@ import {
 } from 'react-admin';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
-
-const VFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn/>
-    </Filter>
+const VF = (props) => (<Filter {...props}><TextInput label="Search" source="q" alwaysOn /></Filter>);
+const SA= ({ basePath, data }) => (
+    <TopToolbar>
+        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
+        <EditButton basePath={basePath} record={data} />
+    </TopToolbar>
 );
-
-const PostEditActions = ({ basePath, data }) => (
+const EA= ({ basePath, data }) => (
     <TopToolbar>
         <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
         <ShowButton basePath={basePath} record={data} />
     </TopToolbar>
 );
 const VList = (props) => (
-    <List {...props} filters={<VFilter />} title="List of role">
+    <List {...props} filters={<VF/>} title="List of role">
         <Datagrid rowClick="show">
             <TextField source="rolename" />
-            <TextField source="description" /> 
+            <TextField source="description" />
             <EditButton />
         </Datagrid>
     </List>
@@ -39,15 +39,15 @@ const VCreate = (props) => (
     </Create>
 );
 const VEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+    <Edit actions={<EA/>} {...props}>
         <SimpleForm>
-            <TextInput source="rolename" disabled/>
+            <TextInput source="rolename" disabled />
             <TextInput source="description" />
         </SimpleForm>
     </Edit>
 );
-const VShow = (props) => (    
-    <Show {...props}>
+const VShow = (props) => (
+    <Show actions={<SA/>}{...props}>
         <SimpleShowLayout>
             <TextField source="rolename" />
             <TextField source="description" />

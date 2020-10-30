@@ -25,7 +25,7 @@ const find = async (req, h) => {
         throw Boom.notFound()
     }
     const response = h.response(lo);
-    response.header('X-Total-Count', c);
+    response.header('X-Total-Count', c - 1);
     return response;
 }
 const create = async (req, res) => {
@@ -44,7 +44,7 @@ const findOne = async (req, res) => {
     try {
         const { id } = req.params
         o = await Model.findById(id)
-        if(!o.active){
+        if (!o.active) {
             throw Boom.notFound()
         }
     } catch (err) {
@@ -55,11 +55,10 @@ const findOne = async (req, res) => {
 const update = async (req, res) => {
     let o = null
     const { id } = req.params
-    const attributes = { ...req.payload };
+    const la = { ...req.payload };
     try {
-        o = await Model.findByIdAndUpdate(id, attributes, { new: true })
+        o = await Model.findByIdAndUpdate(id, la, { new: true })
     } catch (err) {
-        console.log(err)
         throw Boom.notAcceptable()
     }
     return res.response(o)

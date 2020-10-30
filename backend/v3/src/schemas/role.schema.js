@@ -9,7 +9,8 @@ const find = {
         _sort: Joi.string(),
         _order: Joi.string(),
         _start: Joi.number().integer().min(0),
-        _end: Joi.number().integer().min(0).greater(Joi.ref('_start'))
+        _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
+        id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
     })
 }
 const create = {
@@ -17,10 +18,8 @@ const create = {
         Authorization: Joi.string()
     }).options({ allowUnknown: true }),
     payload: Joi.object().keys({
-        username: Joi.string().required(),
-        password: Joi.string().optional(),
-        fullname: Joi.string().optional(),
-        role: Joi.string()
+        rolename: Joi.string().required(),
+        description: Joi.string().required()
     })
 }
 const findOne = {
@@ -39,7 +38,6 @@ const deleteOne = {
         id: Joi.string().required()
     })
 }
-
 const update = {
     headers: Joi.object({
         Authorization: Joi.string()
@@ -48,10 +46,8 @@ const update = {
         id: Joi.string().required()
     }),
     payload: Joi.object().keys({
-        username: Joi.string().required(),
-        password: Joi.string().optional(),
-        fullname: Joi.string().optional(),
-        role: Joi.string(),
+        rolename: Joi.string().required(),
+        description: Joi.string().optional(),
         id: Joi.string()
     })
 }
