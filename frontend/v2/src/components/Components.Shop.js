@@ -3,29 +3,20 @@ import {
     List, Datagrid, TextField,
     Create, SimpleForm, TextInput,
     Edit, EditButton, Show,
-    SimpleShowLayout, Filter,
-    TopToolbar, ListButton, ShowButton
+    SimpleShowLayout, Filter
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
-const VF = (props) => (<Filter {...props}><TextInput label="Search" source="q" alwaysOn /></Filter>);
-const SA= ({ basePath, data }) => (
-    <TopToolbar>
-        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
-        <EditButton basePath={basePath} record={data} />
-    </TopToolbar>
+const VFilter = (props) => (
+    <Filter {...props}>
+        <TextInput label="Search" source="q" alwaysOn />
+    </Filter>
 );
-const EA= ({ basePath, data }) => (
-    <TopToolbar>
-        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
-        <ShowButton basePath={basePath} record={data} />
-    </TopToolbar>
-);
-const VList = (props) => {
+
+export const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
-        <List {...props} filters={<VF />} title="List of shop" filter={{ owner: decodedToken.user.id }}>
+        <List {...props} filters={<VFilter />} title="List of role" filter={{ owner: decodedToken.user.id }}>
             <Datagrid rowClick="show">
                 <TextField source="shopname" />
                 <TextField source="description" />
@@ -34,7 +25,7 @@ const VList = (props) => {
         </List>
     )
 };
-const VCreate = (props) => {
+export const VCreate = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     const transform = data => ({
         ...data,
@@ -49,23 +40,19 @@ const VCreate = (props) => {
         </Create>
     )
 };
-const VEdit = (props) => (
-    <Edit actions={<EA/>} {...props}>
+export const VEdit = (props) => (
+    <Edit {...props}>
         <SimpleForm>
             <TextInput source="shopname" />
             <TextInput source="description" />
         </SimpleForm>
     </Edit>
 );
-const VShow = (props) => (
-    <Show actions={<SA/>} {...props}>
+export const VShow = (props) => (
+    <Show {...props}>
         <SimpleShowLayout>
             <TextField source="shopname" />
             <TextField source="description" />
         </SimpleShowLayout>
     </Show>
 );
-export const L = VList;
-export const C = VCreate;
-export const E = VEdit;
-export const S = VShow;

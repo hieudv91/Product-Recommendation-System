@@ -1,5 +1,4 @@
 const Controller = require('../controllers/shop.controller');
-const S = require('../schemas/shop.schema')
 const Joi = require('joi');
 const PATH = '/api/shops'
 
@@ -10,7 +9,17 @@ module.exports = [
         handler: Controller.find,
         options: {
             tags: ['api', 'shop'],
-            validate: S.find,
+            validate: {
+                query: Joi.object({
+                    q: Joi.string(),
+                    _sort: Joi.string(),
+                    _order: Joi.string(),
+                    _start: Joi.number().integer().min(0),
+                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
+                    id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
+                    owner: Joi.string(),
+                })
+            },
             auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
@@ -20,7 +29,13 @@ module.exports = [
         handler: Controller.create,
         options: {
             tags: ['api', 'shop'],
-            validate: S.create,
+            validate: {
+                payload: Joi.object().keys({
+                    shopname: Joi.string().required(),
+                    description: Joi.string().required(),
+                    owner: Joi.string().required()
+                })
+            },
             auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
@@ -30,8 +45,11 @@ module.exports = [
         handler: Controller.findOne,
         options: {
             tags: ['api', 'shop'],
-            validate: S.find,
-            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
+            validate: {
+                params: Joi.object().keys({
+                    id: Joi.string().required()
+                })
+            }
         }
     },
     {
@@ -40,8 +58,11 @@ module.exports = [
         handler: Controller.deleteOne,
         options: {
             tags: ['api', 'shop'],
-            validate: S.deleteOne,
-            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
+            validate: {
+                params: Joi.object().keys({
+                    id: Joi.string().required()
+                })
+            }
         }
     },
     {
@@ -50,7 +71,17 @@ module.exports = [
         handler: Controller.update,
         options: {
             tags: ['api', 'shop'],
-            validate: S.update,
+            validate: {
+                params: Joi.object().keys({
+                    id: Joi.string().required()
+                }),
+                payload: Joi.object().keys({
+                    shopname: Joi.string().required(),
+                    description: Joi.string().optional(),
+                    owner: Joi.string().optional(),
+                    id: Joi.string()
+                })
+            },
             auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     }

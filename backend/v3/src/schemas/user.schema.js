@@ -56,5 +56,9 @@ const update = {
     }).options({ allowUnknown: true }),
 }
 module.exports = {
-    find, create, findOne, deleteOne, update
+    find, 
+    create,
+    findOne,
+    deleteOne,
+    update
 };
