@@ -2,10 +2,19 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const ModelSchema = new Schema({
+    productid: {
+        required: true,
+        unique: true,
+        type: String
+    },
     productname: {
         required: true,
         unique: true,
         type: String
+    },
+    description: {
+        type: String,
+        required: true,
     },
     shop: {
         type: Schema.Types.ObjectId,
@@ -16,7 +25,12 @@ const ModelSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: true
+    },
+    active: {
+        type: Boolean,
+        default: true,
     }
+
 });
 ModelSchema.set('toJSON', {
     transform: function (doc, ret, options) {

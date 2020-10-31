@@ -75,7 +75,6 @@ const deleteOne = async (req, res) => {
         throw Boom.notAcceptable()
     }
     return res.response(o)
-
 }
 
 module.exports = {

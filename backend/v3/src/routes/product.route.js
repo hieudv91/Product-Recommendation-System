@@ -1,90 +1,56 @@
-const Controller = require('../controllers/product.controller');
-const Joi = require('joi');
+const C = require('../controllers/product.controller');
+const S = require('../schemas/product.schema')
 const PATH = '/api/products'
 
 module.exports = [
     {
         path: `${PATH}`,
         method: 'GET',
-        handler: Controller.find,
+        handler: C.find,
         options: {
             tags: ['api', 'product'],
-            validate: {
-                query: Joi.object({
-                    q: Joi.string(),
-                    _sort: Joi.string(),
-                    _order: Joi.string(),
-                    _start: Joi.number().integer().min(0),
-                    _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
-                    id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
-                    owner: Joi.string(),
-                })
-            },
-            cors: {
-                origin: ['*'],
-                additionalHeaders: ['cache-control', 'x-requested-with'],
-                additionalExposedHeaders: ['X-Total-Count']
-            }
+            validate: S.find,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
         path: `${PATH}`,
         method: 'POST',
-        handler: Controller.create,
+        handler: C.create,
         options: {
             tags: ['api', 'product'],
-            validate: {
-                payload: Joi.object().keys({
-                    productname: Joi.string().required(),
-                    shop: Joi.string().required(),
-                    owner: Joi.string().required()
-                })
-            }
+            validate: S.create,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'GET',
-        handler: Controller.findOne,
+        handler: C.findOne,
         options: {
             tags: ['api', 'product'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            }
+            validate: S.findOne,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'DELETE',
-        handler: Controller.deleteOne,
+        handler: C.deleteOne,
         options: {
             tags: ['api', 'product'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                })
-            }
+            validate: S.deleteOne,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
         path: `${PATH}/{id}`,
         method: 'PUT',
-        handler: Controller.update,
+        handler: C.update,
         options: {
             tags: ['api', 'product'],
-            validate: {
-                params: Joi.object().keys({
-                    id: Joi.string().required()
-                }),
-                payload: Joi.object().keys({
-                    productname: Joi.string().required(),
-                    shop: Joi.string().optional(),
-                    owner: Joi.string().optional(),
-                    id: Joi.string()
-                })
-            }
+            validate: S.update,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     }
 ];
