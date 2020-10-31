@@ -30,7 +30,8 @@ module.exports = [
         handler: Controller.findOne,
         options: {
             tags: ['api', 'shop'],
-            validate: S.findOne
+            validate: S.findOne,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
@@ -39,7 +40,8 @@ module.exports = [
         handler: Controller.deleteOne,
         options: {
             tags: ['api', 'shop'],
-            validate: S.deleteOne
+            validate: S.deleteOne,
+            auth: { strategy: 'jwt', scope: ['admin', 'customer'] }
         }
     },
     {
