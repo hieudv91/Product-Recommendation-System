@@ -8,11 +8,7 @@ import Dashboard from './components/Dashboard';
 const Icon = require('./components/Icons')
 const R = require('./components/Components.Role')
 const U = require('./components/Components.User')
-<<<<<<< HEAD
-
-=======
 const S = require('./components/Components.Shop')
->>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 const ProductComponents = require('./components/Components.Product')
 
 
@@ -26,10 +22,7 @@ const httpClient = (url, options = {}) => {
 const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
 const Role = <Resource name="roles" icon={Icon.Role} list={R.L} create={R.C} edit={R.E} show={R.S} />
 const User = <Resource name="users" icon={Icon.User} list={U.L} create={U.C} edit={U.E} show={U.S} />
-<<<<<<< HEAD
-=======
 const Shop = <Resource name="shops" icon={Icon.User} list={S.L} create={S.C} edit={S.E} show={S.S} />
->>>>>>> 64d16f675d72c5e6a1c20ba785a8c7554e5d747e
 const App = () => (
 
     <Admin dataProvider={dataProvider}

@@ -11,6 +11,7 @@ const find = {
         _start: Joi.number().integer().min(0),
         _end: Joi.number().integer().min(0).greater(Joi.ref('_start')),
         id: Joi.alternatives().try(Joi.array().items(Joi.string()), Joi.string()),
+        owner: Joi.string(),
     })
 }
 const create = {
@@ -18,8 +19,9 @@ const create = {
         Authorization: Joi.string()
     }).options({ allowUnknown: true }),
     payload: Joi.object().keys({
-        rolename: Joi.string().required(),
-        description: Joi.string().required()
+        shopname: Joi.string().required(),
+        description: Joi.string().required(),
+        owner: Joi.string().required()
     }).options({ allowUnknown: true }),
 }
 const findOne = {
@@ -46,8 +48,9 @@ const update = {
         id: Joi.string().required()
     }),
     payload: Joi.object().keys({
-        rolename: Joi.string().required(),
+        shopname: Joi.string().required(),
         description: Joi.string().optional(),
+        owner: Joi.string().optional(),
         id: Joi.string()
     }).options({ allowUnknown: true }),
 }

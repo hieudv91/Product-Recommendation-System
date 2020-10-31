@@ -8,15 +8,16 @@ const find = async (req, h) => {
     let c = 0
     _order = 'DESC' ? '-' : ''
     q = q ? q : ''
-    let lo
+    let lo, f = {}
     const regex = new RegExp(escapeRegex(q), 'gi');
+    f = { rolename: regex, active: true }
     try {
         if (id) {
             let li = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
             lo = await Model.find().where('_id').in(li).exec();
         } else {
-            c = (await Model.find({ rolename: regex, active: true })).length
-            lo = await Model.find({ rolename: regex, active: true })
+            c = (await Model.find(f)).length
+            lo = await Model.find(f)
                 .skip(_start)
                 .limit(_end - _start)
                 .sort(`${_order}${_sort}`)

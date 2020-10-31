@@ -19,6 +19,10 @@ const ModelSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: true
+    },
+    active: {
+        type: Boolean,
+        default: true,
     }
 });
 ModelSchema.set('toJSON', {

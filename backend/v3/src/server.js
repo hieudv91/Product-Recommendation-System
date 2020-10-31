@@ -15,6 +15,7 @@ const validate = async function (decoded, request, h) {
         return {
             isValid: true,
             credentials: {
+                username: decoded.user.username,
                 userid: decoded.user.id,
                 scope: decoded.user.role.toLowerCase()
             }
