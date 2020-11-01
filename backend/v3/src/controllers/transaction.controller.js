@@ -35,7 +35,7 @@ const find = async (req, h) => {
 const create = async (req, res) => {
     const { userid } = req.auth.credentials
     let o = null
-    const la = { ...req.payload, owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
+    const la = { ...req.payload, owner: userid, code: `${req.payload.shop}~${req.payload.code}` }
     try {
         const no = new Model(la);
         o = await no.save();

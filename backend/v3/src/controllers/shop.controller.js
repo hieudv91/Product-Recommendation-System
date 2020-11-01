@@ -11,7 +11,6 @@ const find = async (req, h) => {
     let f = {}, c = 0, lo
     const { userid } = req.auth.credentials
     f = { name: regex, owner: userid, active: true }
-
     try {
         if (id) {
             let ids = typeof id == 'string' ? [id] : uniq = [...new Set(id)];

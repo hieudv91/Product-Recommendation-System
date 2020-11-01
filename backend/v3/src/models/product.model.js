@@ -2,12 +2,17 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const ModelSchema = new Schema({
-    productcode: {
+    _xid:{
         required: true,
         unique: true,
         type: String
     },
-    productname: {
+    code: {
+        required: true,
+        unique: true,
+        type: String
+    },
+    name: {
         required: true,
         unique: true,
         type: String

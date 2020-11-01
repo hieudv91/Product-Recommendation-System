@@ -6,7 +6,11 @@ const ModelSchema = new Schema({
         required: true,
         type: String
     },
-    transid: {
+    person: {
+        type: String,
+        default: 'anonymous',
+    },
+    code: {
         required: true,
         unique: true,
         type: String
@@ -25,6 +29,10 @@ const ModelSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user',
         required: true
+    },
+    active: {
+        type: Boolean,
+        default: true,
     }
 });
 ModelSchema.set('toJSON', {

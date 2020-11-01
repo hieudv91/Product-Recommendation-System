@@ -20,8 +20,10 @@ const create = {
         Authorization: Joi.string()
     }).options({ allowUnknown: true }),
     payload: Joi.object().keys({
+        type: Joi.string().required(),
+        person: Joi.string().required(),
         code: Joi.string().required(),
-        name: Joi.string().required(),
+        items: Joi.array().required(),
         shop: Joi.string().required(),
         owner: Joi.string().required()
     }).options({ allowUnknown: true }),

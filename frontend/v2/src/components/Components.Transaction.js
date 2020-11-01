@@ -57,8 +57,9 @@ const VCreate = (props) => {
     return (
         <Create {...props} transform={transform}>
             <SimpleForm>
+                <TextInput source="type"/>
                 <TextInput source="code" validate={validateCode}/>
-                <TextInput source="name" />
+                <TextInput source="person" />
                 <TextInput source="description" />
                 <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
                     <AutocompleteInput optionText="name" />
