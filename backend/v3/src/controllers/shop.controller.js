@@ -10,7 +10,7 @@ const find = async (req, h) => {
     const regex = new RegExp(escapeRegex(q), 'gi');
     let f = {}, c = 0, lo
     const { userid } = req.auth.credentials
-    f = { shopname: regex, owner: userid, active: true }
+    f = { name: regex, owner: userid, active: true }
 
     try {
         if (id) {
@@ -36,11 +36,12 @@ const create = async (req, res) => {
     const { userid, username, scope } = req.auth.credentials
 
     let o = null
-    const la = { ...req.payload, owner: userid, shopid: `${username}~${req.payload.shopname}` }
+    const la = { ...req.payload, owner: userid, _xid: `${username}~${req.payload.code}` }
     try {
         const no = new Model(la);
         o = await no.save();
     } catch (err) {
+        console.log(err)
         throw Boom.notAcceptable()
     }
     return res.response(o)

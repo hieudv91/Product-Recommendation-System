@@ -6,7 +6,7 @@ const ModelSchema = new Schema({
         required: true,
         type: String
     },
-    code: {
+    transid: {
         required: true,
         unique: true,
         type: String

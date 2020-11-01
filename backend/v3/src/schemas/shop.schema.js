@@ -19,7 +19,8 @@ const create = {
         Authorization: Joi.string()
     }).options({ allowUnknown: true }),
     payload: Joi.object().keys({
-        shopname: Joi.string().required(),
+        code: Joi.string().required(),
+        name: Joi.string().required(),
         description: Joi.string().required(),
         owner: Joi.string().required()
     }).options({ allowUnknown: true }),
@@ -48,7 +49,7 @@ const update = {
         id: Joi.string().required()
     }),
     payload: Joi.object().keys({
-        shopname: Joi.string().required(),
+        name: Joi.string().required(),
         description: Joi.string().optional(),
         owner: Joi.string().optional(),
         id: Joi.string()
