@@ -9,12 +9,10 @@ const ModelSchema = new Schema({
     },
     code: {
         required: true,
-        unique: true,
         type: String
     },
     name: {
         required: true,
-        unique: true,
         type: String
     },
     description: {

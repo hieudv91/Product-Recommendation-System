@@ -21,8 +21,8 @@ const create = {
     }).options({ allowUnknown: true }),
     payload: Joi.object().keys({
         type: Joi.string().required(),
-        person: Joi.string().required(),
-        code: Joi.string().required(),
+        person: Joi.string(),
+        code: Joi.string(),
         items: Joi.array().required(),
         shop: Joi.string().required(),
         owner: Joi.string().required()

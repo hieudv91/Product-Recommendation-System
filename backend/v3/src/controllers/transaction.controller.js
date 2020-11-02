@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Boom = require('@hapi/boom')
-const Model = require('../models/product.model');
+const Model = require('../models/transaction.model');
 const { escapeRegex } = require('../utils/function.util')
 
 const find = async (req, h) => {
@@ -10,8 +10,9 @@ const find = async (req, h) => {
     let f = {}, c = 0, lo
     const regex = new RegExp(escapeRegex(q), 'gi');
     const { userid } = req.auth.credentials
-    f = { name: regex, owner: userid, active: true}
+    f = { code: regex, owner: userid, active: true}
     if(shop) f['shop'] = shop
+    console.log(f)
     try {
         if (id) {
             let ids = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
