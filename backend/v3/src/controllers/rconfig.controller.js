@@ -45,10 +45,8 @@ const findOne = async (req, res) => {
     try {
         const { id } = req.params
         o = await Model.findById(id)
-        if(!o.active){
-            throw Boom.notFound()
-        }
     } catch (err) {
+        console.log(err)
         throw Boom.notFound()
     }
     return res.response(o)

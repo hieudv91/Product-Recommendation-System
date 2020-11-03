@@ -9,8 +9,6 @@ import {
     TopToolbar, ListButton, ShowButton,
     regex, AutocompleteArrayInput,
     ReferenceArrayInput, ChipField,
-    ReferenceArrayField, SingleFieldList
-
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -103,17 +101,12 @@ const VShow = (props) => (
     <Show actions={<SA />} {...props}>
         <SimpleShowLayout>
             <TextField source="type" />
-            <TextField source="person" />
-            <TextField source="code" />
-            <ReferenceArrayField label="Items" source="items" reference="products" >
-                <SingleFieldList>
-                    <ChipField source="name" />
-                </SingleFieldList>
-            </ReferenceArrayField >
-            <TextField source="description" />
             <ReferenceField label="Shop" source="shop" reference="shops" link="show">
                 <ChipField source="name" />
             </ReferenceField>
+            <TextField source="code" />
+            <TextField source="status" />
+            <TextField source="generated" />
         </SimpleShowLayout>
     </Show>
 );

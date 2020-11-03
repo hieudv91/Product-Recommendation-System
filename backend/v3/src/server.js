@@ -85,14 +85,14 @@ const init = async () => {
             validate
         });
     server.route(Routes)
-/*
+
     await server.register({
         plugin: HapiCron,
         options: {
             jobs: cronJobs
         }
     });
-*/
+
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
