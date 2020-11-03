@@ -11,6 +11,7 @@ const U = require('./components/Components.User')
 const S = require('./components/Components.Shop')
 const P = require('./components/Components.Product')
 const T = require('./components/Components.Transaction')
+const Re = require('./components/Components.Recommendation')
 
 
 const httpClient = (url, options = {}) => {
@@ -26,6 +27,7 @@ const User = <Resource name="users" icon={Icon.User} list={U.L} create={U.C} edi
 const Shop = <Resource name="shops" icon={Icon.Shop} list={S.L} create={S.C} edit={S.E} show={S.S} />
 const Product = <Resource name="products" icon={Icon.Product} list={P.L} create={P.C} edit={P.E} show={P.S} />
 const Transaction = <Resource name="transactions" icon={Icon.Transaction} list={T.L} create={T.C} edit={T.E} show={T.S} />
+const Recommendation = <Resource name="recommendations" icon={Icon.Recommendation} list={Re.L} create={Re.C} edit={Re.E} show={Re.S} />
 const App = () => (
     <Admin dataProvider={dataProvider}
         authProvider={authProvider}
@@ -33,7 +35,7 @@ const App = () => (
         layout={MyLayout}>
         {permissions =>
                 permissions === 'admin' ? [Role, User] :
-                    permissions === 'customer' ? [Shop, Product, Transaction]
+                    permissions === 'customer' ? [Shop, Product, Transaction, Recommendation]
                         : null
         }
     </Admin>
