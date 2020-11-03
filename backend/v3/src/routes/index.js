@@ -4,6 +4,7 @@ const RoleRoutes = require('./role.route')
 const ProductRoutes = require('./product.route')
 const ShopRoutes = require('./shop.route')
 const TransactionRoutes = require('./transaction.route')
+const Cronjob = require('./cronjob.route')
 
 const routes =
     [].concat(UserRoutes)
@@ -12,6 +13,7 @@ const routes =
         .concat(ProductRoutes)
         .concat(ShopRoutes)
         .concat(TransactionRoutes)
+        .concat(Cronjob)
 
 convertedRoutes = routes.map(r => {
     r.options.cors = {

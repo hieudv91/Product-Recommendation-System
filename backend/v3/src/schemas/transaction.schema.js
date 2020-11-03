@@ -52,10 +52,12 @@ const update = {
         id: Joi.string().required()
     }),
     payload: Joi.object().keys({
-        name: Joi.string().required(),
-        shop: Joi.string().optional(),
-        owner: Joi.string().optional(),
-        id: Joi.string()
+        type: Joi.string().required(),
+        person: Joi.string(),
+        code: Joi.string(),
+        items: Joi.array().required(),
+        shop: Joi.string().required(),
+        owner: Joi.string().required()
     }).options({ allowUnknown: true }),
 }
 module.exports = {

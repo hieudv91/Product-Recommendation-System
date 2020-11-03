@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const ModelSchema = new Schema({
+    _xid:{
+        required: true,
+        unique: true,
+        type: String
+    },
     type: {
         required: true,
         type: String

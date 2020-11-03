@@ -8,8 +8,8 @@ import {
     ReferenceInput, AutocompleteInput,
     TopToolbar, ListButton, ShowButton,
     regex, AutocompleteArrayInput,
-    ReferenceArrayInput, SelectArrayInput, ChipField,
-    ReferenceManyField, SingleFieldList
+    ReferenceArrayInput, ChipField,
+    ReferenceArrayField, SingleFieldList
 
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
@@ -18,8 +18,8 @@ const validateCode = regex(/^[a-zA-Z0-9]*$/, 'Code must be alphanumberic without
 const VF = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput label="Shop" source="shop" reference="shops" link="show" alwaysOn>
-            <AutocompleteInput optionText="shopname" />
+        <ReferenceInput label="Shops" source="shop" reference="shops" link="show" alwaysOn>
+            <AutocompleteInput optionText="name" />
         </ReferenceInput>
     </Filter>
 );
@@ -43,13 +43,13 @@ const VList = (props) => {
                 <TextField source="type" />
                 <TextField source="person" />
                 <TextField source="code" />
-                <ReferenceManyField label="Items" source="item" reference="products" target="id">
+                <ReferenceArrayField label="Items" source="items" reference="products" >
                     <SingleFieldList>
                         <ChipField source="name" />
                     </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceField label="Shop" source="shop" reference="shops" link="show">
-                    <TextField source="name" />
+                </ReferenceArrayField >
+                <ReferenceField label="Shop" source="shop" reference="shops">
+                    <ChipField source="name" />
                 </ReferenceField>
                 <EditButton />
             </Datagrid>
@@ -87,9 +87,18 @@ const VCreate = (props) => {
 const VEdit = (props) => (
     <Edit actions={<EA />} {...props}>
         <SimpleForm>
-            <TextInput source="code" disabled />
-            <TextInput source="name" />
-            <TextInput source="description" />
+            <AutocompleteInput source="type" choices={[
+                { id: 'SALES_ORDER', name: 'Order' },
+                { id: 'PRODUCT_VIEWED', name: 'View Product' },
+                { id: 'ADD_TO_CART', name: 'Add to Cart' },
+            ]} disabled/>
+            <TextInput source="code" validate={validateCode} disabled/>
+            <TextInput source="person" />
+            <ReferenceArrayInput reference="products" source="items" label="Items">
+                <AutocompleteArrayInput>
+                    <ChipField source="name" />
+                </AutocompleteArrayInput>
+            </ReferenceArrayInput>
             <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
                 <AutocompleteInput optionText="name" />
             </ReferenceInput>
@@ -99,11 +108,17 @@ const VEdit = (props) => (
 const VShow = (props) => (
     <Show actions={<SA />} {...props}>
         <SimpleShowLayout>
+            <TextField source="type" />
+            <TextField source="person" />
             <TextField source="code" />
-            <TextField source="name" />
+            <ReferenceArrayField label="Items" source="items" reference="products" >
+                <SingleFieldList>
+                    <ChipField source="name" />
+                </SingleFieldList>
+            </ReferenceArrayField >
             <TextField source="description" />
             <ReferenceField label="Shop" source="shop" reference="shops" link="show">
-                <TextField source="name" />
+                <ChipField source="name" />
             </ReferenceField>
         </SimpleShowLayout>
     </Show>

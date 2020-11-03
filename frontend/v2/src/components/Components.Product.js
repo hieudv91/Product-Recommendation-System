@@ -6,7 +6,7 @@ import {
     SimpleShowLayout, Filter,
     ReferenceField,
     ReferenceInput, AutocompleteInput,
-    TopToolbar, ListButton, ShowButton,
+    TopToolbar, ListButton, ShowButton, ChipField,
     regex
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
@@ -16,7 +16,7 @@ const VF = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
         <ReferenceInput label="Shop" source="shop" reference="shops" link="show" alwaysOn>
-            <AutocompleteInput optionText="shopname" />
+            <AutocompleteInput optionText="name" />
         </ReferenceInput>
     </Filter>
 );
@@ -41,7 +41,7 @@ const VList = (props) => {
                 <TextField source="name" />
                 <TextField source="description" />
                 <ReferenceField label="Shop" source="shop" reference="shops" link="show">
-                    <TextField source="name" />
+                    <ChipField source="name" />
                 </ReferenceField>
                 <EditButton />
             </Datagrid>
@@ -57,7 +57,7 @@ const VCreate = (props) => {
     return (
         <Create {...props} transform={transform}>
             <SimpleForm>
-                <TextInput source="code" validate={validateCode}/>
+                <TextInput source="code" validate={validateCode} />
                 <TextInput source="name" />
                 <TextInput source="description" />
                 <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
@@ -70,7 +70,7 @@ const VCreate = (props) => {
 const VEdit = (props) => (
     <Edit actions={<EA />} {...props}>
         <SimpleForm>
-            <TextInput source="code" disabled/>
+            <TextInput source="code" disabled />
             <TextInput source="name" />
             <TextInput source="description" />
             <ReferenceInput label="Shop" source="shop" reference="shops" link="show">

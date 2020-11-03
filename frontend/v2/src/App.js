@@ -27,7 +27,6 @@ const Shop = <Resource name="shops" icon={Icon.Shop} list={S.L} create={S.C} edi
 const Product = <Resource name="products" icon={Icon.Product} list={P.L} create={P.C} edit={P.E} show={P.S} />
 const Transaction = <Resource name="transactions" icon={Icon.Transaction} list={T.L} create={T.C} edit={T.E} show={T.S} />
 const App = () => (
-
     <Admin dataProvider={dataProvider}
         authProvider={authProvider}
         dashboard={Dashboard}

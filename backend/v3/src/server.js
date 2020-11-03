@@ -5,9 +5,11 @@ const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 const Jwt = require('hapi-auth-jwt2')
+const HapiCron = require('hapi-cron');
 const Routes = require('./routes/index')
 const db = require('./database').db;
 const { getUserById } = require('./utils/auth.util')
+const cronJobs = require('./cronjob')
 
 
 const validate = async function (decoded, request, h) {
@@ -83,7 +85,14 @@ const init = async () => {
             validate
         });
     server.route(Routes)
-
+/*
+    await server.register({
+        plugin: HapiCron,
+        options: {
+            jobs: cronJobs
+        }
+    });
+*/
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };

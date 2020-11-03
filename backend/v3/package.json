@@ -16,6 +16,7 @@
     "@hapi/vision": "^6.0.1",
     "bcryptjs": "^2.4.3",
     "hapi-auth-jwt2": "^10.2.0",
+    "hapi-cron": "^1.1.0",
     "hapi-swagger": "^14.0.0",
     "joi": "^17.2.1",
     "jsonwebtoken": "^8.5.1",
