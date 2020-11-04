@@ -37,7 +37,7 @@ const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
         <List {...props} filters={<VF />} title="List of role" filter={{ owner: decodedToken.user.id }}>
-            <Datagrid rowClick="show">
+            <Datagrid >
                 <TextField source="type" />
                 <ReferenceField label="Shop" source="shop" reference="shops">
                     <ChipField source="name" />
@@ -45,7 +45,7 @@ const VList = (props) => {
                 <TextField source="code" />
                 <TextField source="status" />
                 <TextField source="generated" />
-
+                <ShowButton label="Preview"></ShowButton>
                 <EditButton />
             </Datagrid>
         </List>

@@ -2,9 +2,9 @@ const C = require('../controllers/cronjob.controller');
 module.exports = [
     {
         method: 'GET',
-        path: '/cronjob/test',
+        path: '/cronjob/gobt',
         options: {
-            handler: C.testJob,
+            handler: C.generateOftenBoughtTogether,
             auth: null,
             description: 'User login.',
         }

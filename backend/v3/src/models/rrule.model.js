@@ -9,6 +9,11 @@ const ModelSchema = new Schema({
     target: {
         required: true,
         type: Array
+    },
+    shop: {
+        type: Schema.Types.ObjectId,
+        ref: 'shop',
+        required: true
     }
 });
 ModelSchema.set('toJSON', {
