@@ -18,8 +18,6 @@ const find = async (req, h) => {
             .skip(_start)
             .limit(_end - _start)
             .sort(`${_order}${_sort}`)
-
-
     } catch (err) {
         throw Boom.notFound()
     }

@@ -7,7 +7,7 @@ const generateOftenBoughtTogetherJob = {
         url: '/cronjob/gobt'
     },
     onComplete: (res) => {
-        console.log(res); // 'hello world'
+        console.log(res);
     }
 }
 

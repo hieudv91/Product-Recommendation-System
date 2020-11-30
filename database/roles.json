@@ -1,0 +1,25 @@
+[{
+  "_id": {
+    "$oid": "5f633a59a71ff910209faeda"
+  },
+  "active": true,
+  "rolename": "admin",
+  "description": "Admin Role",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f633b38825256388498edc8"
+  },
+  "active": true,
+  "rolename": "customer",
+  "description": "Customer Role",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f9afd16396c683cf45b06d1"
+  },
+  "active": false,
+  "rolename": "b",
+  "description": "j",
+  "__v": 0
+}]

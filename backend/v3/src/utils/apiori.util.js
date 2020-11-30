@@ -1,31 +1,41 @@
 const filterMap = (f, m) => new Map([...m].filter(f))
-
 const getValue = (k, m) => m.get(k) || 0
-const mergeMap = (a, b) => [...b].reduce((acc, i) => acc.set(i[0], getValue(i[0], acc) + i[1]), a)
+const mergeMap =
+    (a, b) =>
+        [...b].reduce(
+            (acc, i) =>
+                acc.set(i[0], getValue(i[0], acc) + i[1])
+            , a)
 const diff = (a, b) => a.filter(i => !b.includes(i));
 const addToRule = (ruleSet, left, right, measure) => {
     let currVal = ruleSet.get(left);
-    currVal === undefined ? ruleSet.set(left, [[right, measure]]) : ruleSet.set(left, currVal.concat([[right, measure]]))
+    currVal === undefined ?
+        ruleSet.set(left, [[right, measure]])
+        : ruleSet.set(left, currVal.concat([[right, measure]]))
 }
 const intersect = (a, b) => a.filter(i => b.includes(i));
 const getSubSets_intersect = arr => arr.reduce((s, itm, idx, ar) => s.concat(ar.slice(idx + 1, arr.length).map(i => intersect(itm, i))), [[]])
 //console.log('Welcome to Algorithm')
-
 const apiori = (trans) => {
     //console.log(`We have total ${trans.length} order`)
-
     const MIN_CONFIDENT = 5;
     const MIN_SUPPORT = trans.length * 10 / 100;
-
     // Generate Item Set
     const oneItemCount =
         trans
-            .map(t => t.reduce((acc, i) => acc.set(`${i}`, getValue(`${i}`, acc) + 1), new Map()))
+            .map(t => t
+                .reduce((acc, i) =>
+                    acc.set(`${i}`
+                        , getValue(`${i}`, acc) + 1)
+                    , new Map()))
             .reduce((acc, t) => mergeMap(acc, t), new Map())
+    const firstSet =
+        Array.from(
+            filterMap(
+                ([k, v]) => v > MIN_SUPPORT
+                , oneItemCount)
+                .keys())
 
-
-
-    const firstSet = Array.from(filterMap(([k, v]) => v > MIN_SUPPORT, oneItemCount).keys())
     //console.log(firstSet.length)
     //console.log(MIN_SUPPORT)
 
@@ -49,7 +59,6 @@ const apiori = (trans) => {
         //console.log(`Count Subset in all transaction lvl = ${lvl_itemset}`)
         const countSubInTrans =
             trans.reduce((acc, t, idx) => {
-                //console.log(`Scanning transaction : ${idx} ${t.length}`)
                 subSetArray
                     .map(s => !s.some(val => !t.includes(val)) ? s.toString() : null)
                     .filter(s => s !== null)

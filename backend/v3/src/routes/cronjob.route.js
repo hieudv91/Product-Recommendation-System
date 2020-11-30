@@ -6,7 +6,7 @@ module.exports = [
         options: {
             handler: C.generateOftenBoughtTogether,
             auth: null,
-            description: 'User login.',
+            description: 'Production recommendation generation process.',
         }
     }
 ];

@@ -19,7 +19,7 @@ const generateOftenBoughtTogether = async (req, h) => {
                 trans.filter(t => t.type == 'SALES_ORDER')
                     .map(t => t.items)
 
-            const newRules = 
+            const newRules =
                 Array.from(Apiori.apiori(order))
                     .map(line => ({
                         source: line[0],

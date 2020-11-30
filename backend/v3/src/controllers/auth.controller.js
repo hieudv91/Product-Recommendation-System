@@ -13,7 +13,7 @@ const loginPre_find = async (req, h) => {
             user.createdAt = undefined
             user.__v = undefined
         }
-        if(!user){
+        if (!user) {
             throw Boom.unauthorized(err)
         }
         return user

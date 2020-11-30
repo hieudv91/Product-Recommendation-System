@@ -1,0 +1,13 @@
+[{
+  "_id": {
+    "$oid": "5f633abb825256388498edc7"
+  },
+  "active": true,
+  "username": "admin",
+  "password": "$2a$10$NLJG5u1z6ufALlZAOYaRGOs8EtDUMl4/Z81TuGNqPef2WZRnqMZyG",
+  "fullname": "admin",
+  "role": {
+    "$oid": "5f633a59a71ff910209faeda"
+  },
+  "__v": 0
+}]

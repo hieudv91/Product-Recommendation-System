@@ -21,7 +21,9 @@ const httpClient = (url, options = {}) => {
     options.headers.set('Authorization', localStorage.getItem('accessToken'));
     return fetchUtils.fetchJson(url, options);
 };
+
 const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
+
 const Role = <Resource name="roles" icon={Icon.Role} list={R.L} create={R.C} edit={R.E} show={R.S} />
 const User = <Resource name="users" icon={Icon.User} list={U.L} create={U.C} edit={U.E} show={U.S} />
 const Shop = <Resource name="shops" icon={Icon.Shop} list={S.L} create={S.C} edit={S.E} show={S.S} />
@@ -34,9 +36,9 @@ const App = () => (
         dashboard={Dashboard}
         layout={MyLayout}>
         {permissions =>
-                permissions === 'admin' ? [Role, User] :
-                    permissions === 'customer' ? [Shop, Product, Transaction, Recommendation]
-                        : null
+            permissions === 'admin' ? [Role, User] :
+                permissions === 'customer' ? [Shop, Product, Transaction, Recommendation]
+                    : null
         }
     </Admin>
 );
