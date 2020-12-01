@@ -2,35 +2,24 @@ import * as React from "react";
 import {
     List, Datagrid, TextField,
     Create, SimpleForm, TextInput,
-    Edit, EditButton, Show,
-    SimpleShowLayout, Filter,
+    Edit, EditButton, Show, Filter,
     ReferenceField,
     ReferenceInput, AutocompleteInput,
     TopToolbar, ListButton, ShowButton,
     regex, AutocompleteArrayInput,
     ReferenceArrayInput, ChipField,
-    ReferenceArrayField, SingleFieldList,
-    CreateButton, ExportButton,
-
+    TabbedShowLayout
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
-import { ImportButton } from "react-admin-import-csv";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 const validateCode = regex(/^[a-zA-Z0-9]*$/, 'Code must be alphanumberic without space');
-const LA = props => {
-    const { className, basePath } = props;
-    return (
-        <TopToolbar className={className}>
-            <CreateButton basePath={basePath} />
-            <ExportButton basePath={basePath} />
-            <ImportButton {...props} />
-        </TopToolbar>
-    );
-};
+
 const VF = (props) => (
     <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
         <ReferenceInput label="Shops" source="shop" reference="shops" link="show" alwaysOn>
+            <AutocompleteInput optionText="name" />
+        </ReferenceInput>
+        <ReferenceInput label="Product" source="source" reference="products" link="show" alwaysOn>
             <AutocompleteInput optionText="name" />
         </ReferenceInput>
     </Filter>
@@ -50,23 +39,19 @@ const EA = ({ basePath, data }) => (
 const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
-        <List {...props} filters={<VF />} 
-        title="List of role" 
-        filter={{ owner: decodedToken.user.id }}
-        actions={<LA />}
-        >
-            <Datagrid rowClick="show">
-                <TextField source="type" />
-                <TextField source="code" />
-                <ReferenceArrayField label="Items" source="items" reference="products" >
-                    <SingleFieldList>
-                        <ChipField source="name" />
-                    </SingleFieldList>
-                </ReferenceArrayField >
+        <List {...props} filters={<VF />} title="List of role" filter={{ owner: decodedToken.user.id }} sort={{ field: 'value', order: 'DESC' }}>
+            <Datagrid rowClick="show" >
                 <ReferenceField label="Shop" source="shop" reference="shops">
                     <ChipField source="name" />
                 </ReferenceField>
-                <EditButton />
+                <ReferenceField label="Source Product" source="source" reference="products">
+                    <ChipField source="name" />
+                </ReferenceField>
+                <ReferenceField label="Target Product" source="target" reference="products">
+                    <ChipField source="name" />
+                </ReferenceField>
+                <TextField source="value" />
+            
             </Datagrid>
         </List>
     )
@@ -81,19 +66,17 @@ const VCreate = (props) => {
         <Create {...props} transform={transform}>
             <SimpleForm>
                 <AutocompleteInput source="type" choices={[
-                    { id: 'SALES_ORDER', name: 'Order' },
-                    { id: 'PRODUCT_VIEWED', name: 'View Product' },
-                    { id: 'ADD_TO_CART', name: 'Add to Cart' },
+                    { id: 'BOUGHT_TOGETHER', name: 'Often bought together' },
+                    { id: 'VIEW_TOGETHER', name: 'Often view together' },
                 ]} />
-                <TextInput source="code" validate={validateCode} />
-                <ReferenceArrayInput reference="products" source="items" label="Items">
-                    <AutocompleteArrayInput>
-                        <ChipField source="name" />
-                    </AutocompleteArrayInput>
-                </ReferenceArrayInput>
                 <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
                     <AutocompleteInput optionText="name" />
                 </ReferenceInput>
+                <TextInput source="code" validate={validateCode} />
+                <AutocompleteInput source="status" choices={[
+                    { id: 'ACTIVE', name: 'Active' },
+                    { id: 'DEACTIVE', name: 'Deactive' },
+                ]} />
             </SimpleForm>
         </Create>
     )
@@ -105,8 +88,9 @@ const VEdit = (props) => (
                 { id: 'SALES_ORDER', name: 'Order' },
                 { id: 'PRODUCT_VIEWED', name: 'View Product' },
                 { id: 'ADD_TO_CART', name: 'Add to Cart' },
-            ]} disabled/>
-            <TextInput source="code" validate={validateCode} disabled/>
+            ]} disabled />
+            <TextInput source="code" validate={validateCode} disabled />
+            <TextInput source="person" />
             <ReferenceArrayInput reference="products" source="items" label="Items">
                 <AutocompleteArrayInput>
                     <ChipField source="name" />
@@ -120,19 +104,9 @@ const VEdit = (props) => (
 );
 const VShow = (props) => (
     <Show actions={<SA />} {...props}>
-        <SimpleShowLayout>
-            <TextField source="type" />
-            <TextField source="code" />
-            <ReferenceArrayField label="Items" source="items" reference="products" >
-                <SingleFieldList>
-                    <ChipField source="name" />
-                </SingleFieldList>
-            </ReferenceArrayField >
-            <TextField source="description" />
-            <ReferenceField label="Shop" source="shop" reference="shops" link="show">
-                <ChipField source="name" />
-            </ReferenceField>
-        </SimpleShowLayout>
+        <TabbedShowLayout>
+            
+        </TabbedShowLayout>
     </Show>
 );
 export const L = VList;

@@ -21,18 +21,22 @@ const generateOftenBoughtTogether = async (req, h) => {
 
             const newRules =
                 Array.from(Apiori.apiori(order))
-                    .map(line => ({
-                        source: line[0],
-                        target: line[1],
-                        shop: reco.shop
-                    }))
-
+                    .map(line => line[1]
+                        .map(l => ({
+                            target: line[0],
+                            source: l[0],
+                            value: parseFloat(l[1]).toFixed(2),
+                            shop: reco.shop,
+                            code: reco.code
+                        })))
+                    .reduce((acc, cV) => acc.concat(cV), [])
+                    .filter(i => i.source.split(',').length == 1)
+                    .filter(i => i.target.split(',').length == 1)
             try {
                 const del = await RRule.deleteMany({ shop: reco.shop })
                 const cre = await RRule.create(newRules);
 
             } catch (err) {
-                console.log(err)
                 throw Boom.notAcceptable()
             }
             const shop = await Shop.findById(reco.shop)

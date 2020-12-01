@@ -2,17 +2,17 @@ import * as React from "react";
 import {
     List, Datagrid, TextField,
     Create, SimpleForm, TextInput,
-    Edit, EditButton, Show,
-    SimpleShowLayout, Filter,
+    Edit, EditButton, Show, Filter,
     ReferenceField,
     ReferenceInput, AutocompleteInput,
     TopToolbar, ListButton, ShowButton,
-    regex, AutocompleteArrayInput,
-    ReferenceArrayInput, ChipField,
+    regex, ChipField,
+    TabbedShowLayout, Tab
 } from 'react-admin';
 import decodeJwt from 'jwt-decode';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 const validateCode = regex(/^[a-zA-Z0-9]*$/, 'Code must be alphanumberic without space');
+
 const VF = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
@@ -37,15 +37,12 @@ const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
         <List {...props} filters={<VF />} title="List of role" filter={{ owner: decodedToken.user.id }}>
-            <Datagrid >
+            <Datagrid rowClick="show" >
                 <TextField source="type" />
                 <ReferenceField label="Shop" source="shop" reference="shops">
                     <ChipField source="name" />
                 </ReferenceField>
                 <TextField source="code" />
-                <TextField source="status" />
-                <TextField source="generated" />
-                <ShowButton label="Preview"></ShowButton>
                 <EditButton />
             </Datagrid>
         </List>
@@ -68,10 +65,6 @@ const VCreate = (props) => {
                     <AutocompleteInput optionText="name" />
                 </ReferenceInput>
                 <TextInput source="code" validate={validateCode} />
-                <AutocompleteInput source="status" choices={[
-                    { id: 'ACTIVE', name: 'Active' },
-                    { id: 'DEACTIVE', name: 'Deactive' },
-                ]} />
             </SimpleForm>
         </Create>
     )
@@ -80,34 +73,30 @@ const VEdit = (props) => (
     <Edit actions={<EA />} {...props}>
         <SimpleForm>
             <AutocompleteInput source="type" choices={[
-                { id: 'SALES_ORDER', name: 'Order' },
-                { id: 'PRODUCT_VIEWED', name: 'View Product' },
-                { id: 'ADD_TO_CART', name: 'Add to Cart' },
-            ]} disabled />
-            <TextInput source="code" validate={validateCode} disabled />
-            <TextInput source="person" />
-            <ReferenceArrayInput reference="products" source="items" label="Items">
-                <AutocompleteArrayInput>
-                    <ChipField source="name" />
-                </AutocompleteArrayInput>
-            </ReferenceArrayInput>
+                { id: 'BOUGHT_TOGETHER', name: 'Often bought together' },
+                { id: 'VIEW_TOGETHER', name: 'Often view together' },
+            ]}/>
             <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
                 <AutocompleteInput optionText="name" />
             </ReferenceInput>
+            <TextInput source="code" validate={validateCode} />
         </SimpleForm>
     </Edit>
 );
 const VShow = (props) => (
     <Show actions={<SA />} {...props}>
-        <SimpleShowLayout>
-            <TextField source="type" />
-            <ReferenceField label="Shop" source="shop" reference="shops" link="show">
-                <ChipField source="name" />
-            </ReferenceField>
-            <TextField source="code" />
-            <TextField source="status" />
-            <TextField source="generated" />
-        </SimpleShowLayout>
+        <TabbedShowLayout>
+            <Tab label="summary">
+                <TextField source="type" />
+                <ReferenceField label="Shop" source="shop" reference="shops" link="show">
+                    <ChipField source="name" />
+                </ReferenceField>
+                <TextField source="code" />
+            </Tab>
+            <Tab label="Integration">
+                <TextField source="reco_url" label="Recommendation URL" />
+            </Tab>
+        </TabbedShowLayout>
     </Show>
 );
 export const L = VList;

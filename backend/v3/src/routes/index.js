@@ -6,6 +6,7 @@ const ShopRoutes = require('./shop.route')
 const TransactionRoutes = require('./transaction.route')
 const Cronjob = require('./cronjob.route')
 const Recommendation = require('./rconfig.route')
+const RRule = require('./rrule.route')
 
 const routes =
     [].concat(UserRoutes)
@@ -16,6 +17,7 @@ const routes =
         .concat(TransactionRoutes)
         .concat(Cronjob)
         .concat(Recommendation)
+        .concat(RRule)
 
 convertedRoutes = routes.map(r => {
     r.options.cors = {

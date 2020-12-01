@@ -12,6 +12,7 @@ const S = require('./components/Components.Shop')
 const P = require('./components/Components.Product')
 const T = require('./components/Components.Transaction')
 const Re = require('./components/Components.Recommendation')
+const Rr = require('./components/Components.RRules')
 
 
 const httpClient = (url, options = {}) => {
@@ -25,6 +26,7 @@ const httpClient = (url, options = {}) => {
 const dataProvider = jsonServerProvider('http://localhost:8080/api', httpClient);
 
 const Role = <Resource name="roles" icon={Icon.Role} list={R.L} create={R.C} edit={R.E} show={R.S} />
+const RRule = <Resource name="rrules" icon={Icon.Role} list={Rr.L} options={{ label: 'R-Rules' }}/>
 const User = <Resource name="users" icon={Icon.User} list={U.L} create={U.C} edit={U.E} show={U.S} />
 const Shop = <Resource name="shops" icon={Icon.Shop} list={S.L} create={S.C} edit={S.E} show={S.S} />
 const Product = <Resource name="products" icon={Icon.Product} list={P.L} create={P.C} edit={P.E} show={P.S} />
@@ -37,7 +39,7 @@ const App = () => (
         layout={MyLayout}>
         {permissions =>
             permissions === 'admin' ? [Role, User] :
-                permissions === 'customer' ? [Shop, Product, Transaction, Recommendation]
+                permissions === 'customer' ? [Shop, Product, Transaction, Recommendation, RRule]
                     : null
         }
     </Admin>

@@ -1,7 +1,7 @@
 var Mongoose = require('mongoose');
 
 //load database
-Mongoose.connect('mongodb://localhost/hapijs-mongoose-restapi', { useNewUrlParser: true, useUnifiedTopology: true });
+Mongoose.connect('mongodb://localhost/recommender-system', { useNewUrlParser: true, useUnifiedTopology: true });
 var db = Mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error'));

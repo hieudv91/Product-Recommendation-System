@@ -7,11 +7,27 @@ import {
     ReferenceField,
     ReferenceInput, AutocompleteInput,
     TopToolbar, ListButton, ShowButton, ChipField,
-    regex
+    CreateButton, ExportButton,
+    regex, downloadCSV
 } from 'react-admin';
+import { ImportButton } from "react-admin-import-csv";
 import decodeJwt from 'jwt-decode';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import jsonExport from 'jsonexport/dist';
+
 const validateCode = regex(/^[a-zA-Z0-9]*$/, 'Code must be alphanumberic without space');
+
+const exporter = products => {
+    const productsForExport = products.map(product => {
+        const { code, name, description, shop, owner} = product;
+        return { code, name, description, shop, owner };
+    });
+    jsonExport(productsForExport, {
+        headers: ['code', 'name', 'description', 'shop', 'owner'] // order fields in the export
+    }, (err, csv) => {
+        downloadCSV(csv, 'products'); // download as 'posts.csv` file
+    });
+};
 const VF = (props) => (
     <Filter {...props}>
         <TextInput label="Search" source="q" alwaysOn />
@@ -20,6 +36,16 @@ const VF = (props) => (
         </ReferenceInput>
     </Filter>
 );
+const LA = props => {
+    const { className, basePath } = props;
+    return (
+        <TopToolbar className={className}>
+            <CreateButton basePath={basePath} />
+            <ExportButton basePath={basePath} />
+            <ImportButton {...props} />
+        </TopToolbar>
+    );
+};
 const SA = ({ basePath, data }) => (
     <TopToolbar>
         <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
@@ -35,8 +61,13 @@ const EA = ({ basePath, data }) => (
 const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
-        <List {...props} filters={<VF />} title="List of role" filter={{ owner: decodedToken.user.id }}>
+        <List {...props} filters={<VF />}
+            title="List of role"
+            filter={{ owner: decodedToken.user.id }} 
+            actions={<LA />}
+            exporter={exporter}>
             <Datagrid rowClick="show">
+                <TextField source="id" />
                 <TextField source="code" />
                 <TextField source="name" />
                 <TextField source="description" />
@@ -70,6 +101,7 @@ const VCreate = (props) => {
 const VEdit = (props) => (
     <Edit actions={<EA />} {...props}>
         <SimpleForm>
+            <TextInput source="id" disabled />
             <TextInput source="code" disabled />
             <TextInput source="name" />
             <TextInput source="description" />
@@ -82,6 +114,7 @@ const VEdit = (props) => (
 const VShow = (props) => (
     <Show actions={<SA />} {...props}>
         <SimpleShowLayout>
+            <TextField source="id" />
             <TextField source="code" />
             <TextField source="name" />
             <TextField source="description" />

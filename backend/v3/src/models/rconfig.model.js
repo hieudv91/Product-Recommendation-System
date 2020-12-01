@@ -15,6 +15,9 @@ const ModelSchema = new Schema({
         required: true,
         type: String
     },
+    reco_url: {
+        type: String
+    },
     status: {
         type: String,
         default: 'ACTIVE'
@@ -22,6 +25,10 @@ const ModelSchema = new Schema({
     generated: {
         type: String,
         default: 'NOT YET'
+    },
+    active: {
+        type: Boolean,
+        default: true,
     }
 });
 ModelSchema.set('toJSON', {

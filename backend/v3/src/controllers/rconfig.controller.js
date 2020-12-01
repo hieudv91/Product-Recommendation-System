@@ -10,7 +10,7 @@ const find = async (req, h) => {
     q = q ? q : ''
     let lo, f = {}
     const regex = new RegExp(escapeRegex(q), 'gi');
-    f = { }
+    f = { active: true }
     try {
         if (id) {
             let li = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
@@ -32,6 +32,7 @@ const find = async (req, h) => {
 const create = async (req, res) => {
     let o = null
     const la = { ...req.payload }
+    la['reco_url'] = `http://localhost:8080/api/reco_runtime/${la.code}/<<ProductId>>`
     try {
         const no = new Model(la);
         o = await no.save();

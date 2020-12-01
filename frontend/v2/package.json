@@ -11,6 +11,7 @@
     "ra-data-json-server": "^3.8.4",
     "react": "^16.13.1",
     "react-admin": "^3.8.4",
+    "react-admin-import-csv": "^1.0.14",
     "react-dom": "^16.13.1",
     "react-script": "^2.0.5",
     "react-scripts": "3.4.3"

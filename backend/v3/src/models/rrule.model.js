@@ -8,7 +8,15 @@ const ModelSchema = new Schema({
     },
     target: {
         required: true,
-        type: Array
+        type: String
+    },
+    value: {
+        require: true,
+        type: Number,
+    },
+    code: {
+        required: true,
+        type: String
     },
     shop: {
         type: Schema.Types.ObjectId,
