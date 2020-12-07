@@ -50,10 +50,10 @@ const EA = ({ basePath, data }) => (
 const VList = (props) => {
     const decodedToken = decodeJwt(localStorage.getItem('accessToken'));
     return (
-        <List {...props} filters={<VF />} 
-        title="List of role" 
-        filter={{ owner: decodedToken.user.id }}
-        actions={<LA />}
+        <List {...props} filters={<VF />}
+            title="List of role"
+            filter={{ owner: decodedToken.user.id }}
+            actions={<LA />}
         >
             <Datagrid rowClick="show">
                 <TextField source="type" />
@@ -80,6 +80,10 @@ const VCreate = (props) => {
     return (
         <Create {...props} transform={transform}>
             <SimpleForm>
+
+                <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
+                    <AutocompleteInput optionText="name" />
+                </ReferenceInput>
                 <AutocompleteInput source="type" choices={[
                     { id: 'SALES_ORDER', name: 'Order' },
                     { id: 'PRODUCT_VIEWED', name: 'View Product' },
@@ -91,9 +95,6 @@ const VCreate = (props) => {
                         <ChipField source="name" />
                     </AutocompleteArrayInput>
                 </ReferenceArrayInput>
-                <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
-                    <AutocompleteInput optionText="name" />
-                </ReferenceInput>
             </SimpleForm>
         </Create>
     )
@@ -105,8 +106,8 @@ const VEdit = (props) => (
                 { id: 'SALES_ORDER', name: 'Order' },
                 { id: 'PRODUCT_VIEWED', name: 'View Product' },
                 { id: 'ADD_TO_CART', name: 'Add to Cart' },
-            ]} disabled/>
-            <TextInput source="code" validate={validateCode} disabled/>
+            ]} disabled />
+            <TextInput source="code" validate={validateCode} disabled />
             <ReferenceArrayInput reference="products" source="items" label="Items">
                 <AutocompleteArrayInput>
                     <ChipField source="name" />

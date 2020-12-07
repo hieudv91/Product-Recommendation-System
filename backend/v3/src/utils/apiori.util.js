@@ -30,8 +30,11 @@ const apiori = (trans) => {
             .reduce((acc, t) => mergeMap(acc, t), new Map())
 
     const sum = Array.from(oneItemCount.values()).reduce((a, b) => a + b, 0);
-    const MIN_SUPPORT = (sum / Array.from(oneItemCount.values()).length) - 1 || 0;
-            
+    let MIN_SUPPORT = (sum / Array.from(oneItemCount.values()).length) - 1 || 0;
+    
+    //console.log(MIN_SUPPORT)
+    //MIN_SUPPORT = 50;
+
     const firstSet =
         Array.from(
             filterMap(

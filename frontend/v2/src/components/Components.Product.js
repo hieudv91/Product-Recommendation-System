@@ -65,7 +65,8 @@ const VList = (props) => {
             title="List of role"
             filter={{ owner: decodedToken.user.id }} 
             actions={<LA />}
-            exporter={exporter}>
+            //exporter={exporter}
+            >
             <Datagrid rowClick="show">
                 <TextField source="id" />
                 <TextField source="code" />
@@ -88,12 +89,12 @@ const VCreate = (props) => {
     return (
         <Create {...props} transform={transform}>
             <SimpleForm>
-                <TextInput source="code" validate={validateCode} />
-                <TextInput source="name" />
-                <TextInput source="description" />
                 <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
                     <AutocompleteInput optionText="name" />
                 </ReferenceInput>
+                <TextInput source="code" validate={validateCode} />
+                <TextInput source="name" />
+                <TextInput source="description" />
             </SimpleForm>
         </Create>
     )
@@ -101,13 +102,13 @@ const VCreate = (props) => {
 const VEdit = (props) => (
     <Edit actions={<EA />} {...props}>
         <SimpleForm>
+            <ReferenceInput label="Shop" source="shop" reference="shops" link="show" disabled>
+                <AutocompleteInput optionText="name" />
+            </ReferenceInput>
             <TextInput source="id" disabled />
             <TextInput source="code" disabled />
             <TextInput source="name" />
             <TextInput source="description" />
-            <ReferenceInput label="Shop" source="shop" reference="shops" link="show">
-                <AutocompleteInput optionText="name" />
-            </ReferenceInput>
         </SimpleForm>
     </Edit>
 );

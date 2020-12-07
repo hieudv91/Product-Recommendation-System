@@ -29,7 +29,15 @@ const ModelSchema = new Schema({
     active: {
         type: Boolean,
         default: true,
-    }
+    },
+    min_support: {
+        type: Number,
+        default: 50,
+    },
+    min_confident: {
+        type: Number,
+        default: 50,
+    },
 });
 ModelSchema.set('toJSON', {
     transform: function (doc, ret, options) {

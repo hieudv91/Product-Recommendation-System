@@ -23,7 +23,7 @@ const create = {
         type: Joi.string().required(),
         person: Joi.string(),
         code: Joi.string(),
-        items: Joi.array().required(),
+        items: Joi.required(),
         shop: Joi.string().required(),
         owner: Joi.string().required()
     }).options({ allowUnknown: true }),

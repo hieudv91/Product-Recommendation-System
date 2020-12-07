@@ -35,7 +35,15 @@ const find = async (req, h) => {
 const create = async (req, res) => {
     const { userid } = req.auth.credentials
     let o = null
-    const la = { ...req.payload, owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
+    let la = {}
+
+    if((typeof req.payload.items) == 'string'){
+        la = { ...req.payload, items: req.payload.items.split(";"), owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
+    }else{
+        la = { ...req.payload, owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
+    }
+    console.log( la)
+
     try {
         const no = new Model(la);
         o = await no.save();
