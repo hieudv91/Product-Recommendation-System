@@ -43,6 +43,7 @@ const VList = (props) => {
                     <ChipField source="name" />
                 </ReferenceField>
                 <TextField source="code" />
+                <TextField source="status" />
                 <EditButton />
             </Datagrid>
         </List>

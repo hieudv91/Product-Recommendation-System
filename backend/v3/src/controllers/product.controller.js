@@ -15,7 +15,6 @@ const find = async (req, h) => {
     try {
         if (id) {
             let ids = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
-            console.log(ids)
             lo = await Model.find().where('_id').in(ids).exec();
         } else {
             c = (await Model.find(f)).length

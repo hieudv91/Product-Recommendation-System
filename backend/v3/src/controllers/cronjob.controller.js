@@ -8,12 +8,24 @@ const Apiori = require('../utils/apiori.util')
 
 const generateOftenBoughtTogether = async (req, h) => {
     const time = Date.now();
-    console.log(`[Apiori] Starting generation job id Job-${time}`)
-    const recommendations = await Recommendation.find({})
+
+    const recommendations = await Recommendation.find({ type: 'BOUGHT_TOGETHER', status: 'NOT_YET' })
+
+    if (recommendations.length == 0) {
+        console.log(`[Apiori] There is not recommendation active`);
+        return `[Apiori] Job finished.`;
+    }
+
+    const updSReco = recommendations.map(i => i._id);
+    const upS1 = await
+        Recommendation
+            .update({ _id: { $in: updSReco } },
+                { $set: { status: 'GENERATING' } },
+                { multi: true }
+            )
 
     recommendations
-        .filter(reco => reco.type == 'BOUGHT_TOGETHER')
-        .forEach(async (reco) => {
+        .forEach(async (reco, i) => {
             const trans = await Trans.find({ active: true, shop: reco.shop })
             const order =
                 trans.filter(t => t.type == 'SALES_ORDER')
@@ -40,11 +52,15 @@ const generateOftenBoughtTogether = async (req, h) => {
                 throw Boom.notAcceptable()
             }
             const shop = await Shop.findById(reco.shop)
+            const upS2 = await
+                Recommendation
+                    .update({ _id: { $in: [reco._id] } },
+                        { $set: { status: 'GENERATED' } },
+                        { multi: false }
+                    )
             console.log(`[Apiori] Generation for shop ${shop.name} finished, ${newRules.length} rule(s) generated`)
-
         })
-    //console.log(`[Apiori] Generation job id Job-${time} finished`)
-    return '----------'
+    return `[Apiori] Starting generation job id Job-${time}`;
 }
 
 module.exports = {

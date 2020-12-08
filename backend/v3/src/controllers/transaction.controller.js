@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Boom = require('@hapi/boom')
 const Model = require('../models/transaction.model');
+const Reco = require('../models/rconfig.model');
 const { escapeRegex } = require('../utils/function.util')
 
 const find = async (req, h) => {
@@ -10,8 +11,8 @@ const find = async (req, h) => {
     let f = {}, c = 0, lo
     const regex = new RegExp(escapeRegex(q), 'gi');
     const { userid } = req.auth.credentials
-    f = { code: regex, owner: userid, active: true}
-    if(shop) f['shop'] = shop
+    f = { code: regex, owner: userid, active: true }
+    if (shop) f['shop'] = shop
     try {
         if (id) {
             let ids = typeof id == 'string' ? [id] : uniq = [...new Set(id)];
@@ -37,16 +38,20 @@ const create = async (req, res) => {
     let o = null
     let la = {}
 
-    if((typeof req.payload.items) == 'string'){
+    if ((typeof req.payload.items) == 'string') {
         la = { ...req.payload, items: req.payload.items.split(";"), owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
-    }else{
+    } else {
         la = { ...req.payload, owner: userid, _xid: `${req.payload.shop}~${req.payload.code}` }
     }
-    console.log( la)
 
     try {
         const no = new Model(la);
         o = await no.save();
+        const upS1 = await
+            Reco.update({ shop: o.shop },
+                { $set: { status: 'NOT_YET' } },
+                { multi: true }
+            )
     } catch (err) {
         console.log(err)
         throw Boom.notAcceptable()
@@ -69,6 +74,11 @@ const update = async (req, res) => {
     const la = { ...req.payload };
     try {
         o = await Model.findByIdAndUpdate(id, la, { new: true })
+        const upS1 = await
+            Reco.update({ shop: o.shop },
+                { $set: { status: 'NOT_YET' } },
+                { multi: true }
+            )
     } catch (err) {
         throw Boom.notAcceptable()
     }

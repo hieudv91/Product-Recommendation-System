@@ -20,11 +20,7 @@ const ModelSchema = new Schema({
     },
     status: {
         type: String,
-        default: 'ACTIVE'
-    },
-    generated: {
-        type: String,
-        default: 'NOT YET'
+        default: 'NOT_YET'
     },
     active: {
         type: Boolean,
