@@ -18,7 +18,7 @@ const getSubSets_intersect = arr => arr.reduce((s, itm, idx, ar) => s.concat(ar.
 
 const apiori = (trans) => {
 
-    const MIN_CONFIDENT = 59;
+    const MIN_CONFIDENT = 5;
     // Generate Item Set
     const oneItemCount =
         trans
@@ -32,23 +32,24 @@ const apiori = (trans) => {
     const sum = Array.from(oneItemCount.values()).reduce((a, b) => a + b, 0);
     let MIN_SUPPORT = (sum / Array.from(oneItemCount.values()).length) - 1 || 0;
     
-    //console.log(MIN_SUPPORT)
+    console.table(Array.from(oneItemCount.values()))
+    console.table(MIN_SUPPORT)
     //MIN_SUPPORT = 50;
 
     const firstSet =
         Array.from(
             filterMap(
-                ([k, v]) => v > MIN_SUPPORT
+                ([k, v]) => v >= MIN_SUPPORT
                 , oneItemCount)
                 .keys())
 
     //console.log(`Starting Generate Itemset`)
     let lvl_itemset = 2
-    let feqSets = Array.from(filterMap(([k, v]) => v > MIN_SUPPORT, oneItemCount))
+    let feqSets = Array.from(filterMap(([k, v]) => v >= MIN_SUPPORT, oneItemCount))
     let preSet = firstSet
     let curSet = null
     do {
-        //console.log(`Generating ${lvl_itemset}-itemset`)
+        console.log(`Generating ${lvl_itemset}-itemset`)
         const subSet =
             preSet
                 .map(s => s.split(','))
@@ -59,7 +60,7 @@ const apiori = (trans) => {
                 .reduce((a, s) => new Map([...a, ...s]), new Map())
         const subSetArray = Array.from(subSet.keys()).map(s => s.split(','))
 
-        //console.log(`Count Subset in all transaction lvl = ${lvl_itemset}`)
+        console.log(`Count Subset in all transaction lvl = ${lvl_itemset}`)
         const countSubInTrans =
             trans.reduce((acc, t, idx) => {
                 subSetArray
@@ -70,7 +71,7 @@ const apiori = (trans) => {
                 return acc
             }, new Map())
 
-        const feqMap = filterMap(([k, v]) => v > MIN_SUPPORT, countSubInTrans)
+        const feqMap = filterMap(([k, v]) => v >= MIN_SUPPORT, countSubInTrans)
 
         curSet = Array.from(feqMap.keys())
         feqSets = feqSets.concat(Array.from(feqMap))
@@ -89,7 +90,7 @@ const apiori = (trans) => {
     let allRules = new Map()
     let currentLevelRules = new Map();
 
-    //console.log(`Starting Generate Rule from generated itemset`)
+    console.log(`Starting Generate Rule from generated itemset`)
     feqItemSetArr.forEach(set => {
         let processingItem = set
         let currentLevel = processingItem.map(i => [i])
@@ -97,7 +98,7 @@ const apiori = (trans) => {
         let confidentOfProcessingSet = feqItemSet.get(processingItem.toString())
         currentLevel.forEach(i => {
             const measure = confidentOfProcessingSet / feqItemSet.get(i.toString()) * 100;
-            if (measure > MIN_CONFIDENT) {
+            if (measure >= MIN_CONFIDENT) {
                 const left = diff(processingItem, i).toString();
                 addToRule(currentLevelRules, left, i.toString(), measure)
                 addToRule(allRules, left, i.toString(), measure)
@@ -112,7 +113,7 @@ const apiori = (trans) => {
             currentLevelRules.clear()
             currentLevel.forEach(i => {
                 const measure = confidentOfProcessingSet / feqItemSet.get(i.toString()) * 100;
-                if (measure > MIN_CONFIDENT) {
+                if (measure >= MIN_CONFIDENT) {
                     const right = diff(processingItem, i).toString();
                     addToRule(currentLevelRules, i.toString(), right, measure)
                     addToRule(allRules, i.toString(), right, measure)

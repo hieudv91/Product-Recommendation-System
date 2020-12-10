@@ -30,6 +30,7 @@ const VList = (props) => {
     return (
         <List {...props} filters={<VF />} title="List of shops" filter={{ owner: decodedToken.user.id }}>
             <Datagrid rowClick="show">
+                <TextField source="id"/>
                 <TextField source="code"/>
                 <TextField source="name" />
                 <TextField source="description" />
@@ -66,6 +67,7 @@ const VEdit = (props) => (
 const VShow = (props) => (
     <Show actions={<SA />} {...props}>
         <SimpleShowLayout>
+            <TextField source="id" />
             <TextField source="code" />
             <TextField source="name" />
             <TextField source="description" />

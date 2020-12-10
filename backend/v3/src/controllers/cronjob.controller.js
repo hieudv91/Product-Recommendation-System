@@ -30,6 +30,7 @@ const generateOftenBoughtTogether = async (req, h) => {
             const order =
                 trans.filter(t => t.type == 'SALES_ORDER')
                     .map(t => t.items)
+                    .filter(t => t.length > 1)
 
             const newRules =
                 Array.from(Apiori.apiori(order))
